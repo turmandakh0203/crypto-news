@@ -28,6 +28,10 @@ export const metadata: Metadata = {
   title: 'Crypto News | Криптологи',
   description: 'Криптографийн шинэ мэдээ, судалгаа, шинжилгээ',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/ciphernews_icon_dark.png',
+    apple: '/ciphernews_icon_white.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
