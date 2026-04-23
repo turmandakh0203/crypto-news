@@ -13,8 +13,10 @@ import { SECTIONS } from "@/types/news";
 
 export default async function NewsPage() {
   const allNews = await getAllNews();
-  const heroNews = allNews[0]
-  const restNews = heroNews ? allNews.filter(n => n.id !== heroNews.id) : allNews
+  const heroNews = allNews[0];
+  const restNews = heroNews
+    ? allNews.filter((n) => n.id !== heroNews.id)
+    : allNews;
 
   const byCategory: Record<string, News[]> = {};
   for (const s of SECTIONS) {
@@ -23,7 +25,7 @@ export default async function NewsPage() {
 
   return (
     <LandingLayout>
-      <SectionHeader title="Криптологи" />
+      <SectionHeader />
 
       {heroNews && <MainHeroCard news={heroNews} />}
 

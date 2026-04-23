@@ -19,6 +19,7 @@ import type { Metadata } from "next";
 import ScrollProgress from "@/components/news/ScrollProgress";
 import BackToTop from "@/components/news/BackToTop";
 import ShareButton from "@/components/news/ShareButton";
+import SectionHeader from "@/components/news/SectionHeader";
 import { EyeIconDark } from "@/components/icons";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -43,6 +44,7 @@ export default async function NewsDetailPage({ params }: Props) {
     <LandingLayout activeCategory={news.category}>
       <ScrollProgress />
       <BackToTop />
+      <SectionHeader />
       <article className="min-h-screen bg-bg text-ink">
         {/* ── Hero зураг ── */}
         <div className="relative w-full h-[280px] md:h-[430px] overflow-hidden">

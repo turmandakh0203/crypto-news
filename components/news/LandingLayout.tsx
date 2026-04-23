@@ -3,6 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import ThemeToggle from "@/components/ThemeToggle";
+import SearchButton from "@/components/news/SearchButton";
 import {
   HomeIcon,
   LockIcon,
@@ -106,14 +107,17 @@ function LandingLayoutInner({ children, activeCategory }: Props) {
 
       {/* ── Mobile top bar ── */}
       <header className="md:hidden sticky top-0 z-20 bg-bg border-b border-border">
-        <div className="flex items-center justify-between px-4 h-12">
+        <div className="flex items-center justify-between px-3 h-12">
           <button onClick={handleLogoClick} className="flex items-center gap-2">
             <img src={logo} alt="Logo" className="w-6 h-6" />
             <span className="text-[12px] font-ttNormsPro font-bold tracking-[0.18em] text-ink">
               CRYPTO<span className="text-accent">NEWS</span>
             </span>
           </button>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <SearchButton />
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -157,18 +161,18 @@ function LandingLayoutInner({ children, activeCategory }: Props) {
       {/* ── Зүүн sidebar (desktop) ── */}
       <aside
         className={`hidden md:flex group/sidebar flex-shrink-0 border-r border-border sticky top-0 h-screen flex-col z-20 overflow-hidden transition-[width] duration-300 ease-in-out ${
-          pathname === "/news" ? "w-[52px] hover:w-[180px]" : "w-[180px]"
+          pathname === "/news" ? "w-[60px] hover:w-[180px]" : "w-[180px]"
         }`}
       >
         {/* Лого */}
-        <div className="px-2.5 py-1 border-b border-border flex items-center gap-3 min-w-[180px]">
+        <div className="px-2.5 py-2 border-b border-border flex items-center gap-3 min-w-[180px]">
           <button
             onClick={handleLogoClick}
             className="flex items-center gap-3 group/logo"
           >
-            <img src={logo} alt="Logo" className="w-8 h-8 flex-shrink-0" />
+            <img src={logo} alt="Logo" className="w-10 h-10 flex-shrink-0" />
             <div
-              className={`flex flex-col leading-none transition-opacity duration-100 delay-100 ${pathname === "/news" ? "opacity-0 group-hover/sidebar:opacity-100" : "opacity-100"}`}
+              className={`flex flex-col leading-none transition-opacity duration-100 gap-2 delay-100 ${pathname === "/news" ? "opacity-0 group-hover/sidebar:opacity-100" : "opacity-100"}`}
             >
               <span className="text-[13px] font-ttNprmsPro font-bold tracking-[0.18em] text-ink group-hover/logo:text-accent transition-colors whitespace-nowrap">
                 CRYPTO
@@ -193,7 +197,7 @@ function LandingLayoutInner({ children, activeCategory }: Props) {
             <button
               key={cat}
               onClick={() => handleCategoryClick(cat)}
-              className={`group/item relative flex items-center gap-2 px-4 py-3 transition-all duration-200 border-l-2 text-left ${
+              className={`group/item relative flex items-center gap-2 px-5 py-3 transition-all duration-200 border-l-2 text-left ${
                 cat === active
                   ? "border-accent bg-accent/5"
                   : "border-transparent hover:border-accent/50 hover:bg-surface"
@@ -225,8 +229,17 @@ function LandingLayoutInner({ children, activeCategory }: Props) {
         </nav>
 
         {/* Theme toggle */}
-        <div className="px-3 flex items-center h-12 border-t border-[var(--border)] hover:bg-[var(--surface)]">
+        <div className="px-1 flex items-center h-14 gap-3 border-t border-[var(--border)]  min-w-[180px]">
           <ThemeToggle />
+          <span
+            className={`text-[11px] tracking-[0.08em] uppercase font-ttNormsPro text-muted whitespace-nowrap transition-opacity duration-200 delay-100 ${
+              pathname === "/news"
+                ? "opacity-0 group-hover/sidebar:opacity-100"
+                : "opacity-100"
+            }`}
+          >
+            {resolvedTheme === "dark" ? "Dark mode on" : "Light mode on"}
+          </span>
         </div>
       </aside>
 

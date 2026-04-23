@@ -43,7 +43,7 @@ export default function SectionBanner({
           <span className="text-accent">{line2}</span>
         </h2>
 
-        <p className="text-[13px] text-muted font-ttNormsPro mt-5 leading-[1.4] line-clamp-2">
+        <p className="hidden md:block text-[13px] text-muted font-ttNormsPro mt-5 leading-[1.4] line-clamp-2">
           {desc}
         </p>
       </div>

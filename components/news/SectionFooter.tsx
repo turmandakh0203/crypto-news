@@ -1,6 +1,6 @@
 export default function SectionFooter() {
   return (
-    <div className="p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 border-t-[1px] border-accent bg-bg min-h-12">
+    <div className="p-4 flex flex-col sm:flex-row items-center sm:gap-4 border-t-[1px] border-accent bg-bg min-h-14">
       <span className="text-[10px] tracking-[0.15em] uppercase text-muted font-bebas">
         Crypto News — Криптологийн мэдээллийн эх сурвалж
       </span>
