@@ -55,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="mn">
+    <html lang="mn" suppressHydrationWarning>
       <head>
         <meta
           name="viewport"

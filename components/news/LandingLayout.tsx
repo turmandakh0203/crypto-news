@@ -238,7 +238,7 @@ function LandingLayoutInner({ children, activeCategory }: Props) {
                 : "opacity-100"
             }`}
           >
-            {resolvedTheme === "dark" ? "Dark mode on" : "Light mode on"}
+            {mounted && resolvedTheme !== "dark" ? "Light mode on" : "Dark mode on"}
           </span>
         </div>
       </aside>

@@ -27,8 +27,12 @@ export default function BackToTop() {
       ref={btnRef}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Дээш буцах"
-      className="fixed bottom-16 right-4 md:bottom-8 md:right-8 z-50 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center bg-surface/60 border border-border backdrop-blur-sm text-muted hover:border-accent hover:text-accent transition-all duration-300"
-      style={{ opacity: 0, transform: "translateY(1rem)", pointerEvents: "none" }}
+      className="fixed bottom-16 right-4 md:bottom-8 md:right-8 z-50 w-8 h-8 rounded-full flex items-center justify-center bg-surface/60 border border-border backdrop-blur-sm text-muted hover:border-accent hover:text-accent transition-all duration-300"
+      style={{
+        opacity: 0,
+        transform: "translateY(1rem)",
+        pointerEvents: "none",
+      }}
     >
       <svg
         width="12"

@@ -21,7 +21,7 @@ html {
 
 /* ── Light theme ── */
 .light {
-  --bg: #f4f1ea;
+  --bg: #ffffff;
   --surface: #e2e2e2;
   --border: #c8c8c8;
   --ink: 26 26 26; /* #1a1a1a */

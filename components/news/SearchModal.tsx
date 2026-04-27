@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { searchNews } from "@/lib/actions";
-import { SearchIcon } from "../icons";
+import { CrossIcon, SearchIcon } from "../icons";
 
 type Result = {
   id: number;
@@ -97,9 +97,9 @@ export default function SearchModal({ onClose }: Props) {
           )}
           <button
             onClick={onClose}
-            className="text-[10px] tracking-[0.1em] text-ink/80 border border-border px-2 py-1 rounded-full font-ttNormsPro hover:text-ink transition-colors flex-shrink-0"
+            className="text-[10px] tracking-[0.1em] text-ink/80 border border-border rounded-full font-ttNormsPro hover:text-ink transition-colors flex-shrink-0"
           >
-            Хаах
+            <CrossIcon className="w-6 h-6 text-ink/80" />
           </button>
         </div>
 

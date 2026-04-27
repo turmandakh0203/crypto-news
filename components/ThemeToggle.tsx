@@ -13,13 +13,13 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
+      aria-label={isDark ? "Цагаан горимд шилжих" : "Харанхуй горимд шилжих"}
       title={isDark ? "Цагаан горим" : "Харанхуй горим"}
-      className="relative w-12 h-7 rounded-full overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none"
+      className="relative w-12 h-7 rounded-full overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none transition-all duration-500"
       style={{
         background: isDark
           ? "linear-gradient(160deg, #0a0a1f 0%, #111130 100%)"
           : "linear-gradient(170deg, #38b6ff 0%, #7fd4ff 100%)",
-        transition: "background 0.5s",
       }}
     >
       {/* Clouds */}
@@ -98,7 +98,7 @@ export default function ThemeToggle() {
             "left 0.42s cubic-bezier(0.34, 1.15, 0.64, 1), background 0.5s, box-shadow 0.5s",
           background: isDark
             ? "#c8c8d8"
-            : "radial-gradient(circle at 50% 50%, #fff59d 0%, #ffd600 55%, #ff9800 100%)",
+            : "radial-gradient(circle at 50% 50%, #fff59d 0%, #ffd600 55% , #ff9800 100%)",
           boxShadow: isDark
             ? "inset -4px -2px 0 0 #7878a0, 0 1px 4px rgba(0,0,0,0.5)"
             : "0 0 10px 4px rgba(255,200,0,0.35), 0 0 3px rgba(255,140,0,0.4)",
