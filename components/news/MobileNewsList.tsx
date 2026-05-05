@@ -5,6 +5,8 @@ import Image from "next/image";
 import type { News } from "@/types/news";
 import { TAG_COLORS } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
+import { loadMoreCategoryNews } from "@/lib/actions";
+import { LOAD_MORE_SIZE } from "@/lib/supabase";
 
 const PAGE_SIZE = 6;
 
@@ -125,26 +127,51 @@ function ListCard({ news, index }: { news: News; index: number }) {
   );
 }
 
-export default function MobileNewsList({ news }: { news: News[] }) {
+type MobileNewsListProps = { news: News[]; hasMore?: boolean; category?: string };
+
+export default function MobileNewsList({ news, hasMore = false, category = "" }: MobileNewsListProps) {
+  const [allItems, setAllItems] = useState(news);
   const [visible, setVisible] = useState(PAGE_SIZE);
+  const serverPageRef = useRef(1);
+  const serverHasMoreRef = useRef(hasMore);
+  const loadingRef = useRef(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const canShowMore = visible < allItems.length || serverHasMoreRef.current;
 
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting)
-          setVisible((v) => Math.min(v + PAGE_SIZE, news.length));
+      async ([entry]) => {
+        if (!entry.isIntersecting || loadingRef.current) return;
+
+        if (visible < allItems.length) {
+          setVisible((v) => Math.min(v + PAGE_SIZE, allItems.length));
+          return;
+        }
+
+        if (!serverHasMoreRef.current || !category) return;
+        loadingRef.current = true;
+        const { news: more, hasMore: nextMore } = await loadMoreCategoryNews(
+          category,
+          serverPageRef.current,
+          LOAD_MORE_SIZE,
+        );
+        setAllItems((prev) => [...prev, ...more]);
+        setVisible((v) => v + more.length);
+        serverPageRef.current += 1;
+        serverHasMoreRef.current = nextMore;
+        loadingRef.current = false;
       },
       { rootMargin: "300px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [news.length]);
+  }, [visible, allItems.length, category]);
 
-  if (!news.length) return null;
-  const items = news.slice(0, visible);
+  if (!allItems.length) return null;
+  const items = allItems.slice(0, visible);
 
   return (
     <div className="pb-2">
@@ -155,23 +182,11 @@ export default function MobileNewsList({ news }: { news: News[] }) {
         ))}
       </div>
 
-      {visible < news.length && (
-        <div
-          ref={sentinelRef}
-          className="flex items-center justify-center py-6 gap-1"
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-            style={{ animationDelay: "0ms" }}
-          />
-          <span
-            className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-            style={{ animationDelay: "150ms" }}
-          />
-          <span
-            className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-            style={{ animationDelay: "300ms" }}
-          />
+      {canShowMore && (
+        <div ref={sentinelRef} className="flex items-center justify-center py-6 gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "0ms" }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "150ms" }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "300ms" }} />
         </div>
       )}
     </div>

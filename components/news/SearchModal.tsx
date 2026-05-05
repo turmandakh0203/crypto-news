@@ -10,7 +10,8 @@ type Result = {
   slug: string;
   title: string;
   lead: string;
-  category: string;
+  category_id: number;
+  categories: { name: string } | null;
   image_url: string | null;
 };
 
@@ -128,7 +129,7 @@ export default function SearchModal({ onClose }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="text-[8px] tracking-[0.12em] uppercase text-accent font-mono">
-                      {r.category}
+                      {r.categories?.name ?? ""}
                     </span>
                     <p className="text-[13px] text-ink font-ttNormsPro leading-[1.3] line-clamp-1 mt-0.5">
                       {r.title}

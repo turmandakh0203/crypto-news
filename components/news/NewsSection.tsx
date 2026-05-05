@@ -3,6 +3,7 @@ import SectionBanner from "@/components/news/SectionBanner";
 import HeroCard from "@/components/news/HeroCard";
 import GridCard from "@/components/news/GridCard";
 import MobileNewsList from "@/components/news/MobileNewsList";
+import DesktopLoadMore from "@/components/news/DesktopLoadMore";
 
 type SectionConfig = {
   key: string;
@@ -15,6 +16,7 @@ type SectionConfig = {
 type Props = {
   section: SectionConfig;
   news: News[];
+  hasMore?: boolean;
   index?: number;
 };
 
@@ -29,9 +31,11 @@ function EmptySection({ category }: { category: string }) {
   );
 }
 
-export default function NewsSection({ section, news, index = 0 }: Props) {
+export default function NewsSection({ section, news, hasMore = false, index = 0 }: Props) {
   const heroes = news.slice(0, 2);
   const grid = news.slice(2);
+  // startPage=1 because page 0 is already loaded server-side
+  const loadMorePage = 1;
 
   return (
     <section data-section={section.key} className="border-t border-border">
@@ -49,10 +53,10 @@ export default function NewsSection({ section, news, index = 0 }: Props) {
         <div className="px-3 py-4 md:px-10 md:py-6 bg-bg">
           {/* Mobile: Featured + list + infinite scroll */}
           <div className="md:hidden">
-            <MobileNewsList news={news} />
+            <MobileNewsList news={news} hasMore={hasMore} category={section.key} />
           </div>
 
-          {/* Desktop: 2 HeroCard + GridCard */}
+          {/* Desktop: 2 HeroCard + GridCard + load more */}
           <div className="hidden md:block">
             {heroes.length > 0 && (
               <div className="grid grid-cols-2 gap-px mb-px">
@@ -71,6 +75,9 @@ export default function NewsSection({ section, news, index = 0 }: Props) {
                   <GridCard news={n} key={n.id} index={i} />
                 ))}
               </div>
+            )}
+            {hasMore && (
+              <DesktopLoadMore category={section.key} startPage={loadMorePage} />
             )}
           </div>
         </div>

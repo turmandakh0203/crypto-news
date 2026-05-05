@@ -14,6 +14,7 @@ const config: Config = {
         bebas: ['var(--font-bebas)'],
         SpaceGrotesk: ['var(--font-space)'],
         ttNormsPro: ['var(--font-tt-norms-pro)'],
+        sourceSerif: ['var(--font-source-serif)', 'serif'],
       },
       colors: {
         bg:      'var(--bg)',

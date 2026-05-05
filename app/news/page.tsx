@@ -1,7 +1,6 @@
-// app/news/page.tsx
 export const dynamic = "force-dynamic";
 
-import { getAllNews } from "@/lib/supabase";
+import { getAllNews, getCategories } from "@/lib/supabase";
 import LandingLayout from "@/components/news/LandingLayout";
 import type { News } from "@/types/news";
 import MainHeroCard from "@/components/news/MainHeroCard";
@@ -9,31 +8,36 @@ import NewsSection from "@/components/news/NewsSection";
 import SectionFooter from "@/components/news/SectionFooter";
 import SectionHeader from "@/components/news/SectionHeader";
 
-import { SECTIONS } from "@/types/news";
-
 export default async function NewsPage() {
-  const allNews = await getAllNews();
+  const [allNews, categories] = await Promise.all([getAllNews(), getCategories()]);
+
   const heroNews = allNews[0];
   const restNews = heroNews
     ? allNews.filter((n) => n.id !== heroNews.id)
     : allNews;
 
   const byCategory: Record<string, News[]> = {};
-  for (const s of SECTIONS) {
-    byCategory[s.key] = restNews.filter((n) => n.category === s.key);
+  for (const cat of categories) {
+    byCategory[cat.name] = restNews.filter((n) => n.category === cat.name);
   }
 
   return (
-    <LandingLayout>
+    <LandingLayout categories={categories}>
       <SectionHeader />
 
       {heroNews && <MainHeroCard news={heroNews} />}
 
-      {SECTIONS.map((section, i) => (
+      {categories.map((cat, i) => (
         <NewsSection
-          key={section.key}
-          section={section}
-          news={byCategory[section.key] ?? []}
+          key={cat.id}
+          section={{
+            key: cat.name,
+            sectionLabel: cat.section_label ?? "",
+            line1: cat.line1 ?? "",
+            line2: cat.line2 ?? "",
+            desc: cat.description ?? "",
+          }}
+          news={byCategory[cat.name] ?? []}
           index={i}
         />
       ))}

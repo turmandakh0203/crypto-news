@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
-import {
-  Bebas_Neue,
-  Space_Grotesk,
-  JetBrains_Mono,
-  Plus_Jakarta_Sans,
-} from "next/font/google";
+import localFont from "next/font/local";
+import { Space_Grotesk, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 
-const bebas = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
+const bebas = localFont({
+  src: "../public/fonts/BebasNeue-Regular.ttf",
   variable: "--font-bebas",
+  display: "swap",
+});
+
+const sourceSerif = localFont({
+  src: [
+    { path: "../public/fonts/SourceSerif4-Variable.ttf", style: "normal" },
+    { path: "../public/fonts/SourceSerif4-Italic-Variable.ttf", style: "italic" },
+  ],
+  variable: "--font-source-serif",
+  display: "swap",
 });
 
 const spaceGrotesk = Space_Grotesk({
@@ -65,7 +70,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#0a0a0a" />
       </head>
       <body
-        className={`${bebas.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${ttNormsPro.variable} antialiased`}
+        className={`${bebas.variable} ${sourceSerif.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${ttNormsPro.variable} antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

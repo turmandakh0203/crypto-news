@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -7,9 +7,10 @@ import sanitizeHtml from "sanitize-html";
 import {
   getNewsBySlug,
   getRelatedNews,
-  trackView,
   getViewCount,
+  getCategories,
 } from "@/lib/supabase";
+import ViewTracker from "@/components/news/ViewTracker";
 import { TAG_COLORS, PROSE_CLASSES } from "@/types/news";
 import LandingLayout from "@/components/news/LandingLayout";
 import YoutubeEmbed from "@/components/news/YoutubeEmbed";
@@ -19,8 +20,11 @@ import type { Metadata } from "next";
 import ScrollProgress from "@/components/news/ScrollProgress";
 import BackToTop from "@/components/news/BackToTop";
 import ShareButton from "@/components/news/ShareButton";
-import SectionHeader from "@/components/news/SectionHeader";
-import { EyeIconDark } from "@/components/icons";
+import HeroParallax from "@/components/news/HeroParallax";
+import ViewCount from "@/components/news/ViewCount";
+import SectionFooter from "@/components/news/SectionFooter";
+import Comments from "@/components/news/Comments";
+import { getComments } from "@/lib/actions";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,52 +33,33 @@ function formatDate(dateStr: string): string {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 }
 
+function readingTime(content: string): number {
+  const text = content.replace(/<[^>]*>/g, " ");
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 120));
+}
+
 export default async function NewsDetailPage({ params }: Props) {
   const { slug } = await params;
   const news = await getNewsBySlug(slug);
   if (!news) notFound();
 
-  const [related, viewCount] = (await Promise.all([
-    getRelatedNews(news.category, news.id),
+  const [related, viewCount, categories, comments] = await Promise.all([
+    getRelatedNews(news.category_id, news.id),
     getViewCount(news.id),
-    trackView(news.id),
-  ])) as [Awaited<ReturnType<typeof getRelatedNews>>, number, void];
+    getCategories(),
+    getComments(news.id),
+  ]);
 
   return (
-    <LandingLayout activeCategory={news.category}>
+    <LandingLayout activeCategory={news.category} categories={categories}>
+      <ViewTracker newsId={news.id} />
       <ScrollProgress />
       <BackToTop />
-      <SectionHeader />
       <article className="min-h-screen bg-bg text-ink">
         {/* ── Hero зураг ── */}
-        <div className="relative w-full h-[280px] md:h-[430px] overflow-hidden">
-          {news.image_url ? (
-            <Image
-              src={news.image_url}
-              alt={news.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#150808] to-[#200c0a]">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(230,51,41,0.2),transparent_55%)]" />
-            </div>
-          )}
-
-          {/* Давхар gradient:
-              - Дээд хэсэг: текст уншигдах хар дэвсгэр
-              - Доод хэсэг: var(--bg) өнгөрүү шилжилт */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-full"
-            style={{
-              background:
-                "linear-gradient(to top, var(--bg) 0%, color-mix(in srgb, var(--bg) 60%, black) 14%, rgba(0,0,0,0.70) 34%, rgba(0,0,0,0.2) 78%, transparent 100%)",
-            }}
-          />
-
-          {/* <div className="corner-br" /> */}
+        <HeroParallax imageUrl={news.image_url} alt={news.title}>
+          <div className="absolute bottom-0 left-0 right-0 h-full bg-black/40" />
 
           {/* Mobile: буцах товч — зүүн дээр */}
           <Link
@@ -96,11 +81,11 @@ export default async function NewsDetailPage({ params }: Props) {
             <div className="max-w-[760px]">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-4 h-[1.5px] bg-accent" />
-                <span className="text-[8px] tracking-[0.22em] uppercase text-accent font-mono">
+                <span className="text-[10px] tracking-[0.22em] uppercase text-accent font-ttnormspro font-bold">
                   {news.tags?.[0]}
                 </span>
               </div>
-              <div
+              <h1
                 className="font-ttNormsPro text-[28px] md:text-[52px] leading-[1.1] font-semibold"
                 style={{
                   backgroundImage:
@@ -110,24 +95,24 @@ export default async function NewsDetailPage({ params }: Props) {
                   color: "transparent",
                 }}
               >
-                <span>{news.title}</span>
-              </div>
+                {news.title}
+              </h1>
 
               {/* Metadata: огноо · зохиогч · үзэлт */}
               <div className="flex items-center gap-2 mt-4 flex-wrap">
                 {news.created_at && (
-                  <span className="text-[10px] font-mono font-semibold tracking-[0.1em] text-ink/50">
+                  <span className="text-[10px] font-mono font-semibold tracking-[0.1em] text-[#f0ece0]/70">
                     {formatDate(news.created_at)}
                   </span>
                 )}
                 {news.author && (
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-[1px] bg-accent/50" />
-                    <span className="text-[11px] font-mono font-semibold tracking-[0.1em] text-ink/50">
-                      Published by {news.author}
+                    <span className="text-[11px] font-mono text-white/70">
+                      {news.author}
                     </span>
                     {news.author_role && (
-                      <span className="text-[9px] font-semibold tracking-[0.08em] text-ink/50 font-SpaceGrotesk">
+                      <span className="text-[9px] text-white/60">
                         ({news.author_role})
                       </span>
                     )}
@@ -135,15 +120,18 @@ export default async function NewsDetailPage({ params }: Props) {
                 )}
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-[1px] bg-accent/50" />
-                  <span className="text-[11px] font-mono font-semibold tracking-[0.1em] text-ink/50 flex items-center gap-1">
-                    <EyeIconDark className="w-3 h-3" />
-                    {viewCount}
+                  <ViewCount newsId={news.id} initialCount={viewCount} />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-[1px] bg-accent/50" />
+                  <span className="text-[11px] font-mono font-semibold tracking-[0.1em] text-[#f0ece0]/70">
+                    {readingTime(news.content)} мин унших
                   </span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </HeroParallax>
 
         {/* ── Агуулга — hero-г давж эхэлнэ ── */}
         <div className="max-w-[840px] mx-auto px-4 md:px-6 -mt-6 md:-mt-14 pt-10 md:pt-20 relative z-10">
@@ -227,7 +215,7 @@ export default async function NewsDetailPage({ params }: Props) {
           <div className="flex items-center justify-end md:justify-between pt-6 mt-8 border-t border-border">
             <Link
               href="/news"
-              className="hidden md:inline text-[9px] tracking-[0.14em] rounded-full uppercase font-ttNormsPro text-muted border border-border px-3 py-1.5 hover:text-ink hover:border-muted transition-colors"
+              className="hidden md:inline text-[9px] tracking-[0.14em] rounded-full uppercase font-ttNormsPro font-semibold text-muted border border-border px-3 py-1.5 hover:text-ink hover:border-muted transition-colors"
             >
               ← Буцах
             </Link>
@@ -241,11 +229,11 @@ export default async function NewsDetailPage({ params }: Props) {
             <div className="mt-10 py-6 border-t border-border">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-2.5 h-[1.5px] bg-accent" />
-                <span className="text-[8px] tracking-[0.2em] uppercase text-muted font-mono">
+                <span className="text-[10px] tracking-[0.2em] uppercase text-muted font-ttNormsPro font-semibold">
                   Холбоотой мэдээ
                 </span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {related.map((r) => (
                   <Link
                     key={r.id}
@@ -295,8 +283,12 @@ export default async function NewsDetailPage({ params }: Props) {
               </div>
             </div>
           )}
+
+          {/* Сэтгэгдэл */}
+          <Comments newsId={news.id} initialComments={comments} />
         </div>
       </article>
+      <SectionFooter />
     </LandingLayout>
   );
 }

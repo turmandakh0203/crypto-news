@@ -46,7 +46,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
           </div>
         )}
 
-        <div className="absolute inset-0 bg-black/80 group-hover:bg-black/60 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
         <div className="absolute inset-0 [background:repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.012)_2px,rgba(255,255,255,0.012)_3px)]" />
 
         {/* Corner brackets */}
@@ -63,7 +63,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
               <div
                 className={`h-[1.5px] w-4 bg-accent anim-slide-r anim-delay-1 ${v}`}
               />
-              <span className="text-[8px] tracking-[0.22em] uppercase text-accent font-bebas">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-accent font-ttnormspro font-bold">
                 {news.tags?.[0]}
               </span>
             </div>
@@ -72,7 +72,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
           {/* Гарчиг — мөр бүр тусдаа reveal */}
           <div className="pb-4 reveal-wrap">
             <div className={`reveal-up anim-delay-2 ${v}`}>
-              <h1
+              <h2
                 className="font-ttNormsPro font-medium text-[26px] md:text-[44px] w-full md:w-4/5 leading-[1.1] line-clamp-3"
                 style={{
                   backgroundImage:
@@ -83,7 +83,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
                 }}
               >
                 {news.title}
-              </h1>
+              </h2>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
                     {formatDate(news.created_at)}
                   </span>
                 )}
-                <span className="text-[7px] md:text-[9px] tracking-[0.3em] text-accent rounded-full border border-[rgba(230,51,41,0.4)] px-4 py-2 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
+                <span className="text-[7px] font-SpaceGrotesk md:text-[10px] tracking-[0.2em] text-accent rounded-full border border-[rgba(230,51,41,0.4)] px-4 py-2 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
                   Дэлгэрэнгүй →
                 </span>
               </div>

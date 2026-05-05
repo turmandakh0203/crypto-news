@@ -13,7 +13,7 @@ html {
   --surface: #0d0d0d;
   --border: #222222;
   --ink: 240 236 224; /* #f0ece0 */
-  --muted: 85 85 85; /* #555555 */
+  --muted: 153 153 153; /* #555555 */
   --faint: #1a1a1a;
   --section-num-stroke: rgba(230, 51, 41, 0.35);
   --section-glow: rgba(223, 221, 221, 0.1);
@@ -307,4 +307,35 @@ html {
 }
 .prose td.red {
   color: #e63329;
+}
+/* callout */
+div.note {
+  border-left: 3px solid #d4a020;
+  background: rgba(212, 160, 32, 0.08);
+  padding: 10px 14px;
+}
+div.warning {
+  border-left: 3px solid #e63329;
+  background: rgba(230, 51, 41, 0.08);
+  padding: 10px 14px;
+}
+div.example {
+  border-left: 3px solid #3060b0;
+  background: rgba(48, 96, 176, 0.08);
+  padding: 10px 14px;
+}
+
+/* floating image */
+img[data-floating="true"] {
+  position: absolute;
+}
+
+[data-type="columns"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+[data-type="column"] {
+  min-width: 0; /* grid overflow-оос сэргийлнэ */
 }

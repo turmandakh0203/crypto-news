@@ -12,7 +12,6 @@ export default function GridCard({ news, index }: Props) {
   const { ref, inView } = useInView<HTMLAnchorElement>();
 
   const v = inView ? "in-view" : "";
-  const tags = Array.isArray(news.tags) ? news.tags : [];
   const tagColor = TAG_COLORS[index % 5] ?? TAG_COLORS[0];
   const slideClass =
     index % 3 === 0
@@ -43,7 +42,7 @@ export default function GridCard({ news, index }: Props) {
             src={news.image_url}
             alt={news.title}
             fill
-            className="object-cover opacity-70 group-hover:scale-125 transition-all duration-700 ease-out"
+            className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
             sizes="33vw"
           />
         ) : (
@@ -51,7 +50,7 @@ export default function GridCard({ news, index }: Props) {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(140,60,220,0.25),transparent_60%)]" />
           </div>
         )}
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
         <div className="corner-tl" />
         <div className="corner-br" />
 
@@ -60,7 +59,7 @@ export default function GridCard({ news, index }: Props) {
             {news.tags?.[0] && (
               <div className="reveal-wrap mb-1 self-start">
                 <div
-                  className={`reveal-up anim-delay-1 text-[7px] tracking-[0.14em] uppercase rounded-full border px-1.5 py-[2px] inline-block ${v}`}
+                  className={`reveal-up anim-delay-1 text-[8px] tracking-[0.18em] uppercase rounded-full border font-semibold px-1.5 py-[2px] inline-block ${v}`}
                   style={{
                     color: tagColor.color,
                     backgroundColor: tagColor.bg,
@@ -72,20 +71,20 @@ export default function GridCard({ news, index }: Props) {
               </div>
             )}
             <div className="reveal-wrap">
-              <div
+              <h3
                 className={`reveal-up anim-delay-2 font-ttNormsPro w-full md:w-4/5 text-[18px] md:text-[22px] text-white leading-[1.2] ${v}`}
               >
                 {news.title}
-              </div>
+              </h3>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
             <div className="reveal-wrap">
               <div className={`reveal-up anim-delay-3 ${v}`}>
-                <h3 className="text-[14px] text-white/70 font-SpaceGrotesk w-4/5 leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
+                <p className="text-[14px] text-white/70 font-SpaceGrotesk w-4/5 leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
                   {news.lead}
-                </h3>
+                </p>
               </div>
             </div>
             {news.created_at && (

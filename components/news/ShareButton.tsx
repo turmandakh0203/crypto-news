@@ -25,7 +25,7 @@ export default function ShareButton({ title, slug }: Props) {
     <div className="flex items-center gap-2">
       <button
         onClick={handleShare}
-        className="flex items-center gap-1.5 text-[10px] tracking-[0.12em] border border-border rounded-full py-1.5 px-3 font-ttNormsPro text-muted hover:text-ink transition-colors group"
+        className="flex items-center gap-1.5 text-[9px] tracking-[0.12em] border border-border rounded-full py-1.5 px-3 font-ttNormsPro font-semibold uppercase text-muted hover:text-ink hover:border-muted transition-colors group"
       >
         {copied ? (
           <>
@@ -48,7 +48,7 @@ export default function ShareButton({ title, slug }: Props) {
           </>
         ) : (
           <>
-            <ShareIcon className="text-ink/70 w-3 h-3" />
+            <ShareIcon className="w-4 h-4" />
             Хуваалцах
           </>
         )}

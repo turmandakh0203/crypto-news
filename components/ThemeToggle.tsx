@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Цагаан горимд шилжих" : "Харанхуй горимд шилжих"}
       title={isDark ? "Цагаан горим" : "Харанхуй горим"}
-      className="relative w-12 h-7 rounded-full overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none transition-all duration-500"
+      className="relative w-10 h-6 rounded-full overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none transition-all duration-500"
       style={{
         background: isDark
           ? "linear-gradient(160deg, #0a0a1f 0%, #111130 100%)"
@@ -28,7 +28,7 @@ export default function ThemeToggle() {
         style={{ opacity: isDark ? 0 : 1, transition: "opacity 0.4s" }}
       >
         {/* Cloud A */}
-        <div className="absolute" style={{ top: 7, right: 7 }}>
+        <div className="absolute" style={{ top: 5, right: 15 }}>
           <div
             className="absolute rounded-full bg-white"
             style={{ width: 14, height: 8, top: 3, left: 0 }}
@@ -43,7 +43,7 @@ export default function ThemeToggle() {
           />
         </div>
         {/* Cloud B */}
-        <div className="absolute" style={{ bottom: 5, right: 20 }}>
+        <div className="absolute" style={{ bottom: 10, right: 20 }}>
           <div
             className="absolute rounded-full bg-white/70"
             style={{ width: 9, height: 5, top: 3, left: 0 }}
@@ -66,13 +66,12 @@ export default function ThemeToggle() {
       >
         {(
           [
-            { t: 5, l: 24, s: 2 },
-            { t: 15, l: 34, s: 1.5 },
-            { t: 7, l: 41, s: 1.5 },
-            { t: 20, l: 28, s: 1.5 },
-            { t: 4, l: 47, s: 1 },
-            { t: 19, l: 45, s: 1 },
-            { t: 11, l: 52, s: 2 },
+            { t: 5, l: 13, s: 2 },
+            { t: 15, l: 13, s: 1.5 },
+            { t: 7, l: 6, s: 1.5 },
+            { t: 20, l: 5, s: 1.5 },
+            { t: 4, l: 19, s: 1 },
+            { t: 23, l: 15, s: 1 },
           ] as { t: number; l: number; s: number }[]
         ).map((star, i) => (
           <div
@@ -91,9 +90,9 @@ export default function ThemeToggle() {
 
       {/* Knob — sun / moon */}
       <div
-        className="absolute top-1 w-5 h-5 rounded-full"
+        className="absolute top-0.5 w-5 h-5 rounded-full"
         style={{
-          left: isDark ? "calc(100% - 24px)" : "4px",
+          left: isDark ? "calc(100% - 22px)" : "2px",
           transition:
             "left 0.42s cubic-bezier(0.34, 1.15, 0.64, 1), background 0.5s, box-shadow 0.5s",
           background: isDark

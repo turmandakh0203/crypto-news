@@ -1,6 +1,7 @@
 # Crypto-MN · Хэрэглэгч талын мэдээний хуудас
 
 ## Файлын бүтэц
+
 ```
 /types/news.ts                    ← төрлүүд, өнгөний тохиргоо
 /lib/supabase.ts                  ← DB functions
@@ -15,6 +16,7 @@
 ```
 
 ## Суулгах
+
 ```bash
 # 1. Package
 npm install @supabase/supabase-js @tailwindcss/typography
@@ -36,6 +38,7 @@ import { Bebas_Neue, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 ```
 
 ## Хэрхэн ажилладаг
+
 1. Admin /admin/news/new → мэдээ бичнэ → Нийтлэх
 2. Supabase-д published:true болж хадгалагдана
 3. /news хуудас → getAllNews() → Hero + Grid + List харуулна
