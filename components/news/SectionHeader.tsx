@@ -19,7 +19,14 @@ export default function SectionHeader() {
       <span className="font-bebas font-semibold text-[32px] uppercase tracking-[0.1em] text-ink px-4 flex items-center">
         Крипто <p className="text-accent">логи</p>
       </span>
-      <div className="flex-1 h-px bg-faint" />
+      {/* <div className="flex-1 h-px bg-faint" /> */}
+      <div
+        className="h-[1px] flex-1"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, #e63329 40%, #ff9b3c 70%, transparent 100%)",
+        }}
+      />
       <div className="flex items-stretch px-2">
         <span className="hidden sm:flex px-4 items-center text-[12px] tracking-[0.12em] text-muted font-mono">
           {now}

@@ -184,7 +184,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 ]),
                 allowedAttributes: {
                   ...sanitizeHtml.defaults.allowedAttributes,
-                  "*": ["class", "style", "id"],
+                  "*": ["class", "style", "id", "data-type"],
                   iframe: [
                     "src",
                     "allowfullscreen",

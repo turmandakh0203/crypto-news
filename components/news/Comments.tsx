@@ -101,7 +101,7 @@ export default function Comments({ newsId, initialComments }: Props) {
               required
               maxLength={60}
               placeholder="Таны нэр"
-              className="w-full bg-surface border border-border rounded-lg px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors"
+              className="w-full bg-surface border border-border rounded-xl px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors"
             />
           </div>
           <div>
@@ -114,7 +114,7 @@ export default function Comments({ newsId, initialComments }: Props) {
               onChange={(e) => setEmail(e.target.value)}
               maxLength={120}
               placeholder="email@example.com"
-              className="w-full bg-surface border border-border rounded-lg px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors"
+              className="w-full bg-surface border border-border rounded-xl px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors"
             />
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function Comments({ newsId, initialComments }: Props) {
             maxLength={1000}
             rows={4}
             placeholder="Сэтгэгдэлээ бичнэ үү..."
-            className="w-full bg-surface border border-border rounded-lg px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors resize-none"
+            className="w-full bg-surface border border-border rounded-xl px-3 py-2.5 text-[13px] text-ink placeholder:text-muted font-ttNormsPro outline-none focus:border-accent/50 transition-colors resize-none"
           />
           <div className="flex justify-end mt-1">
             <span className="text-[10px] font-mono text-muted">

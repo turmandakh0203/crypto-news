@@ -5,6 +5,7 @@ import type { News } from "@/types/news";
 import { TAG_COLORS } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { useInView } from "@/lib/useInView";
+import { CalenderIcon } from "../icons";
 
 type Props = { news: News; index: number };
 
@@ -82,7 +83,7 @@ export default function GridCard({ news, index }: Props) {
           <div className="flex flex-col gap-4">
             <div className="reveal-wrap">
               <div className={`reveal-up anim-delay-3 ${v}`}>
-                <p className="text-[14px] text-white/70 font-SpaceGrotesk w-4/5 leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
+                <p className="text-[13px] text-white/70 font-SpaceGrotesk w-4/5 leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
                   {news.lead}
                 </p>
               </div>
@@ -91,7 +92,8 @@ export default function GridCard({ news, index }: Props) {
               <div className="reveal-wrap">
                 <div className={`reveal-up anim-delay-5 ${v}`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-[9px] tracking-[0.1em] text-white/40 font-mono">
+                    <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/40 font-mono">
+                      <CalenderIcon className="w-3 h-3" />
                       {formatDate(news.created_at)}
                     </span>
                     <span className="text-[7px] md:text-[9px] tracking-[0.16em] rounded-full text-accent border border-[rgba(230,51,41,0.4)] px-3 py-1.5 group-hover:bg-accent group-hover:text-white group-hover:tracking-[0.22em] transition-all duration-300 inline-block">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { News } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { useInView } from "@/lib/useInView";
+import { CalenderIcon } from "../icons";
 
 type Props = { news: News; direction?: "left" | "right" };
 
@@ -101,7 +102,8 @@ export default function HeroCard({ news, direction = "left" }: Props) {
             <div className={`reveal-up anim-delay-5 ${v}`}>
               <div className="flex justify-between items-center">
                 {news.created_at && (
-                  <span className="text-[10px] tracking-[0.1em] text-white/40 font-mono">
+                  <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/40 font-mono">
+                    <CalenderIcon className="w-3 h-3" />
                     {formatDate(news.created_at)}
                   </span>
                 )}
