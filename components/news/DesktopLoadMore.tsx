@@ -1,41 +1,31 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import type { News } from "@/types/news";
 import GridCard from "@/components/news/GridCard";
 import { loadMoreCategoryNews } from "@/lib/actions";
 import { LOAD_MORE_SIZE } from "@/lib/supabase";
 
-type Props = { category: string; startPage: number };
+type Props = { category: string; startOffset: number };
 
-export default function DesktopLoadMore({ category, startPage }: Props) {
+export default function DesktopLoadMore({ category, startOffset }: Props) {
   const [items, setItems] = useState<News[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const pageRef = useRef(startPage);
-  const loadingRef = useRef(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  const offsetRef = useRef(startOffset);
 
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      async ([entry]) => {
-        if (!entry.isIntersecting || loadingRef.current) return;
-        loadingRef.current = true;
-        const { news, hasMore: more } = await loadMoreCategoryNews(
-          category,
-          pageRef.current,
-          LOAD_MORE_SIZE,
-        );
-        setItems((prev) => [...prev, ...news]);
-        pageRef.current += 1;
-        setHasMore(more);
-        loadingRef.current = false;
-      },
-      { rootMargin: "300px" },
+  async function handleLoadMore() {
+    if (loading) return;
+    setLoading(true);
+    const { news, hasMore: more } = await loadMoreCategoryNews(
+      category,
+      offsetRef.current,
+      LOAD_MORE_SIZE,
     );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [category]);
+    setItems((prev) => [...prev, ...news]);
+    offsetRef.current += news.length;
+    setHasMore(more);
+    setLoading(false);
+  }
 
   return (
     <>
@@ -46,7 +36,17 @@ export default function DesktopLoadMore({ category, startPage }: Props) {
           ))}
         </div>
       )}
-      {hasMore && <div ref={sentinelRef} className="h-2" />}
+      {hasMore && (
+        <div className="flex justify-center py-8">
+          <button
+            onClick={handleLoadMore}
+            disabled={loading}
+            className="text-[10px] tracking-[0.14em] uppercase font-ttNormsPro font-semibold text-accent rounded-2xl border border-accent/40 px-6 py-2 hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {loading ? "Уншиж байна..." : `Цааш мэдээ унших →`}
+          </button>
+        </div>
+      )}
     </>
   );
 }

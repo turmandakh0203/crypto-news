@@ -43,12 +43,12 @@ export default function SectionFooter() {
               Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй
               байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.
             </p>
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span className="text-[12px] tracking-[0.14em] text-muted font-ttNormsPro">
                 Шинэ мэдээ тогтмол нийтлэгддэг
               </span>
-            </div>
+            </div> */}
           </div>
 
           {/* ── Ангилалууд ── */}

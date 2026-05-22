@@ -17,7 +17,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
 
   return (
     <div
-      className={`relative m-2 rounded-xl overflow-hidden border border-border ${slideClass} ${v}`}
+      className={`relative rounded-xl overflow-hidden border border-border m-2 ${slideClass} ${v}`}
     >
       {/* Gradient top border */}
       <div
@@ -30,7 +30,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
       <Link
         ref={ref}
         href={`/news/${news.slug}`}
-        className="group block relative overflow-hidden min-h-[300px] md:min-h-[480px]"
+        className="group block relative overflow-hidden min-h-[240px] md:min-h-[360px]"
       >
         {/* Зураг */}
         {news.image_url ? (
@@ -42,8 +42,8 @@ export default function HeroCard({ news, direction = "left" }: Props) {
             sizes="50vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#150808] to-[#200c0a]">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(220,80,40,0.2),transparent_60%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_60%)]" />
           </div>
         )}
 
@@ -77,7 +77,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
                 className="font-ttNormsPro font-medium text-[26px] md:text-[44px] w-full md:w-4/5 leading-[1.1] line-clamp-3"
                 style={{
                   backgroundImage:
-                    "linear-gradient(110deg, rgb(255,232,185) 0%, rgb(215,55,40) 100%)",
+                    "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
                   backgroundClip: "text",
                   WebkitBackgroundClip: "text",
                   color: "transparent",
@@ -102,12 +102,13 @@ export default function HeroCard({ news, direction = "left" }: Props) {
             <div className={`reveal-up anim-delay-5 ${v}`}>
               <div className="flex justify-between items-center">
                 {news.created_at && (
-                  <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/40 font-mono">
+                  <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/65 font-mono">
                     <CalenderIcon className="w-3 h-3" />
                     {formatDate(news.created_at)}
                   </span>
+
                 )}
-                <span className="text-[7px] font-SpaceGrotesk md:text-[10px] tracking-[0.2em] text-accent rounded-full border border-[rgba(230,51,41,0.4)] px-4 py-2 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
+                <span className="text-[9px] font-SpaceGrotesk md:text-[10px] tracking-[0.2em] text-accent rounded-full border border-accent/40 px-4 py-2 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
                   Дэлгэрэнгүй →
                 </span>
               </div>

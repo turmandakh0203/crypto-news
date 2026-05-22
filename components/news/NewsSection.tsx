@@ -31,11 +31,14 @@ function EmptySection({ category }: { category: string }) {
   );
 }
 
-export default function NewsSection({ section, news, hasMore = false, index = 0 }: Props) {
+export default function NewsSection({
+  section,
+  news,
+  hasMore = false,
+  index = 0,
+}: Props) {
   const heroes = news.slice(0, 2);
   const grid = news.slice(2);
-  // startPage=1 because page 0 is already loaded server-side
-  const loadMorePage = 1;
 
   return (
     <section data-section={section.key} className="border-t border-border">
@@ -50,10 +53,14 @@ export default function NewsSection({ section, news, hasMore = false, index = 0 
       {news.length === 0 ? (
         <EmptySection category={section.key} />
       ) : (
-        <div className="px-3 py-4 md:px-10 md:py-6 bg-bg">
+        <div className="py-4 md:py-6 bg-bg">
           {/* Mobile: Featured + list + infinite scroll */}
           <div className="md:hidden">
-            <MobileNewsList news={news} hasMore={hasMore} category={section.key} />
+            <MobileNewsList
+              news={news}
+              hasMore={hasMore}
+              category={section.key}
+            />
           </div>
 
           {/* Desktop: 2 HeroCard + GridCard + load more */}
@@ -77,7 +84,10 @@ export default function NewsSection({ section, news, hasMore = false, index = 0 
               </div>
             )}
             {hasMore && (
-              <DesktopLoadMore category={section.key} startPage={loadMorePage} />
+              <DesktopLoadMore
+                category={section.key}
+                startOffset={news.length}
+              />
             )}
           </div>
         </div>

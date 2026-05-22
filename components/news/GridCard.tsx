@@ -47,8 +47,8 @@ export default function GridCard({ news, index }: Props) {
             sizes="33vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0518] to-[#160a28]">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(140,60,220,0.25),transparent_60%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_60%)]" />
           </div>
         )}
         <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
@@ -92,11 +92,11 @@ export default function GridCard({ news, index }: Props) {
               <div className="reveal-wrap">
                 <div className={`reveal-up anim-delay-5 ${v}`}>
                   <div className="flex justify-between items-center">
-                    <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/40 font-mono">
+                    <span className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/65 font-mono">
                       <CalenderIcon className="w-3 h-3" />
                       {formatDate(news.created_at)}
                     </span>
-                    <span className="text-[7px] md:text-[9px] tracking-[0.16em] rounded-full text-accent border border-[rgba(230,51,41,0.4)] px-3 py-1.5 group-hover:bg-accent group-hover:text-white group-hover:tracking-[0.22em] transition-all duration-300 inline-block">
+                    <span className="text-[9px] md:text-[9px] tracking-[0.16em] rounded-full text-accent border border-accent/40 px-3 py-1.5 group-hover:bg-accent group-hover:text-white group-hover:tracking-[0.22em] transition-all duration-300 inline-block">
                       Дэлгэрэнгүй →
                     </span>
                   </div>

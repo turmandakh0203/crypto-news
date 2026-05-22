@@ -26,9 +26,9 @@ export default function MainHeroCard({ news }: Props) {
   const v = inView ? "in-view" : "";
 
   return (
-    <div ref={ref} className="relative border-b border-[#1c1c1c]">
-      <div className="corner-tl z-10" />
-      <div className="corner-br z-10" />
+    <div ref={ref} className="relative rounded-xl overflow-hidden my-6 mx-4">
+      <div className="corner-tl z-10 px-4" />
+      <div className="corner-br z-10 px-4" />
 
       <Link
         href={`/news/${news.slug}`}
@@ -44,7 +44,7 @@ export default function MainHeroCard({ news }: Props) {
             priority
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0d0508] to-[#1a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
         )}
         <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
 
@@ -92,7 +92,7 @@ export default function MainHeroCard({ news }: Props) {
           {/* Button */}
           <div className="reveal-wrap">
             <div className={`reveal-up anim-delay-5 ${v}`}>
-              <span className="text-[10px] tracking-[0.18em] uppercase text-[#e63329] rounded-full border border-[rgba(230,51,41,0.4)] px-4 py-2 group-hover:bg-[#e63329] group-hover:text-white transition-all inline-block font-ttnormspro font-semibold">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-accent rounded-full border border-accent/40 px-4 py-2 group-hover:bg-accent group-hover:text-white transition-all inline-block font-ttnormspro font-bold">
                 Дэлгэрэнгүй →
               </span>
             </div>

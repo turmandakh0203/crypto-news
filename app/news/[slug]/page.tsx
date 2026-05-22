@@ -89,7 +89,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 className="font-ttNormsPro text-[28px] md:text-[52px] leading-[1.1] font-semibold"
                 style={{
                   backgroundImage:
-                    "linear-gradient(90deg, rgb(255,155,60) 0%, rgb(170,15,8) 100%)",
+                    "linear-gradient(90deg, rgb(255,201,134) 0%, rgb(230,51,41) 100%)",
                   backgroundClip: "text",
                   WebkitBackgroundClip: "text",
                   color: "transparent",
@@ -251,8 +251,8 @@ export default async function NewsDetailPage({ params }: Props) {
                           sizes="400px"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#150808] to-[#200c0a]">
-                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_70%)]" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
+                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.1),transparent_70%)]" />
                         </div>
                       )}
                       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />

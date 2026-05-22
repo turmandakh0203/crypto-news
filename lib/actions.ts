@@ -12,10 +12,10 @@ function supabase() {
 
 export async function loadMoreCategoryNews(
   category: string,
-  page: number,
+  offset: number,
   limit: number = LOAD_MORE_SIZE,
 ) {
-  return getNewsCategory(category, page, limit);
+  return getNewsCategory(category, offset, limit);
 }
 
 export async function trackViewAction(newsId: number) {

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { News } from "@/types/news";
@@ -7,8 +7,6 @@ import { TAG_COLORS } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { loadMoreCategoryNews } from "@/lib/actions";
 import { LOAD_MORE_SIZE } from "@/lib/supabase";
-
-const PAGE_SIZE = 6;
 
 function FeaturedCard({ news, index }: { news: News; index: number }) {
   const tagColor = TAG_COLORS[index % 5] ?? TAG_COLORS[0];
@@ -21,7 +19,7 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
         className="absolute inset-x-0 top-0 h-[1px] z-10"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, #fe2726 50%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, #1a5fb4 50%, transparent 100%)",
         }}
       />
       <div className="relative h-52">
@@ -34,7 +32,7 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
             sizes="100vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0518] to-[#160a28]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
         )}
         <div className="absolute inset-0" />
       </div>
@@ -60,11 +58,11 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
         </p>
         <div className="flex justify-between items-center">
           {news.created_at && (
-            <span className="text-[9px] tracking-[0.1em] text-white/40 font-mono">
+            <span className="text-[9px] tracking-[0.1em] text-muted font-mono">
               {formatDate(news.created_at)}
             </span>
           )}
-          <span className="text-[7px] tracking-[0.16em] uppercase rounded-full text-accent border border-[rgba(230,51,41,0.4)] px-3 py-1.5 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
+          <span className="text-[7px] tracking-[0.16em] uppercase rounded-full text-accent border border-accent/40 px-3 py-1.5 group-hover:bg-accent group-hover:text-white transition-all duration-300 inline-block">
             Дэлгэрэнгүй →
           </span>
         </div>
@@ -90,7 +88,7 @@ function ListCard({ news, index }: { news: News; index: number }) {
             sizes="72px"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0518] to-[#160a28]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
         )}
       </div>
 
@@ -114,11 +112,11 @@ function ListCard({ news, index }: { news: News; index: number }) {
         </div>
         <div className="flex justify-between items-center mt-2">
           {news.created_at && (
-            <span className="text-[9px] text-white/40 font-mono">
+            <span className="text-[9px] text-muted font-mono">
               {formatDate(news.created_at)}
             </span>
           )}
-          <span className="text-[8px] tracking-[0.12em] uppercase rounded-full text-accent border border-[rgba(230,51,41,0.4)] px-3 py-1">
+          <span className="text-[8px] tracking-[0.12em] uppercase rounded-full text-accent border border-accent/40 px-3 py-1">
             Унших →
           </span>
         </div>
@@ -127,66 +125,52 @@ function ListCard({ news, index }: { news: News; index: number }) {
   );
 }
 
-type MobileNewsListProps = { news: News[]; hasMore?: boolean; category?: string };
+type Props = { news: News[]; hasMore?: boolean; category?: string };
 
-export default function MobileNewsList({ news, hasMore = false, category = "" }: MobileNewsListProps) {
+export default function MobileNewsList({
+  news,
+  hasMore = false,
+  category = "",
+}: Props) {
   const [allItems, setAllItems] = useState(news);
-  const [visible, setVisible] = useState(PAGE_SIZE);
-  const serverPageRef = useRef(1);
-  const serverHasMoreRef = useRef(hasMore);
-  const loadingRef = useRef(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [canLoadMore, setCanLoadMore] = useState(hasMore);
+  const [loading, setLoading] = useState(false);
+  const offsetRef = useRef(news.length);
 
-  const canShowMore = visible < allItems.length || serverHasMoreRef.current;
-
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      async ([entry]) => {
-        if (!entry.isIntersecting || loadingRef.current) return;
-
-        if (visible < allItems.length) {
-          setVisible((v) => Math.min(v + PAGE_SIZE, allItems.length));
-          return;
-        }
-
-        if (!serverHasMoreRef.current || !category) return;
-        loadingRef.current = true;
-        const { news: more, hasMore: nextMore } = await loadMoreCategoryNews(
-          category,
-          serverPageRef.current,
-          LOAD_MORE_SIZE,
-        );
-        setAllItems((prev) => [...prev, ...more]);
-        setVisible((v) => v + more.length);
-        serverPageRef.current += 1;
-        serverHasMoreRef.current = nextMore;
-        loadingRef.current = false;
-      },
-      { rootMargin: "300px" },
+  async function handleLoadMore() {
+    if (loading || !category) return;
+    setLoading(true);
+    const { news: more, hasMore: nextMore } = await loadMoreCategoryNews(
+      category,
+      offsetRef.current,
+      LOAD_MORE_SIZE,
     );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [visible, allItems.length, category]);
+    setAllItems((prev) => [...prev, ...more]);
+    offsetRef.current += more.length;
+    setCanLoadMore(nextMore);
+    setLoading(false);
+  }
 
   if (!allItems.length) return null;
-  const items = allItems.slice(0, visible);
 
   return (
     <div className="pb-2">
-      <FeaturedCard news={items[0]} index={0} />
+      <FeaturedCard news={allItems[0]} index={0} />
       <div className="mt-1">
-        {items.slice(1).map((n, i) => (
+        {allItems.slice(1).map((n, i) => (
           <ListCard key={n.id} news={n} index={i + 1} />
         ))}
       </div>
 
-      {canShowMore && (
-        <div ref={sentinelRef} className="flex items-center justify-center py-6 gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "0ms" }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "150ms" }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: "300ms" }} />
+      {canLoadMore && (
+        <div className="flex justify-center py-6 px-4">
+          <button
+            onClick={handleLoadMore}
+            disabled={loading}
+            className="w-full text-[10px] tracking-[0.18em] uppercase font-ttNormsPro rounded-2xl font-semibold text-accent border border-accent/40 py-2 hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {loading ? "Уншиж байна..." : `Цааш мэдээ унших →`}
+          </button>
         </div>
       )}
     </div>

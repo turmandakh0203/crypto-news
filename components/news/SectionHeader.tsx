@@ -24,7 +24,7 @@ export default function SectionHeader() {
         className="h-[1px] flex-1"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, #e63329 40%, #ff9b3c 70%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, #1a5fb4 40%, #60a5fa 70%, transparent 100%)",
         }}
       />
       <div className="flex items-stretch px-2">

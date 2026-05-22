@@ -48,8 +48,8 @@ export default function HeroParallax({ imageUrl, alt, children }: Props) {
             priority
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#150808] to-[#200c0a]">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(230,51,41,0.2),transparent_55%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(230,51,41,0.15),transparent_55%)]" />
           </div>
         )}
       </div>
