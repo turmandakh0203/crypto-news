@@ -97,7 +97,7 @@ export default async function SectionFooter() {
       <div className="border-t border-border">
         <div className="max-w-[1200px] mx-auto px-6 py-[14.5px] flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-[12px] tracking-[0.14em] text-muted font-ttNormsPro uppercase">
-            © 2024–{year} · CryptoLogy · v2.1.0
+            © 2024–{year} · CryptoLogy · v2.1.1
           </span>
           <span className="text-[12px] tracking-[0.1em] text-muted font-ttNormsPro">
             Made with <span className="text-accent">❤️</span> by{" "}
