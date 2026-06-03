@@ -5,11 +5,19 @@ import GridCard from "@/components/news/GridCard";
 import { loadMoreCategoryNews } from "@/lib/actions";
 import { LOAD_MORE_SIZE } from "@/lib/supabase";
 
-type Props = { category: string; startOffset: number };
+type Props = {
+  category: string;
+  startOffset: number;
+  initialHasMore?: boolean;
+};
 
-export default function DesktopLoadMore({ category, startOffset }: Props) {
+export default function DesktopLoadMore({
+  category,
+  startOffset,
+  initialHasMore = true,
+}: Props) {
   const [items, setItems] = useState<News[]>([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
   const offsetRef = useRef(startOffset);
 
@@ -37,7 +45,7 @@ export default function DesktopLoadMore({ category, startOffset }: Props) {
         </div>
       )}
       {hasMore && (
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center pt-4">
           <button
             onClick={handleLoadMore}
             disabled={loading}

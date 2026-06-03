@@ -28,8 +28,9 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
             src={news.image_url}
             alt={news.title}
             fill
+            priority={index === 0}
             className="object-cover opacity-80 group-hover:scale-105 transition-all duration-500"
-            sizes="100vw"
+            sizes="calc(100vw - 1rem)"
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
@@ -163,13 +164,13 @@ export default function MobileNewsList({
       </div>
 
       {canLoadMore && (
-        <div className="flex justify-center py-6 px-4">
+        <div className="flex justify-center pt-4 px-4">
           <button
             onClick={handleLoadMore}
             disabled={loading}
             className="w-full text-[10px] tracking-[0.18em] uppercase font-ttNormsPro rounded-2xl font-semibold text-accent border border-accent/40 py-2 hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? "Уншиж байна..." : `Цааш мэдээ унших →`}
+            {loading ? "Уншиж байна..." : `Дараагийн мэдээнүүд →`}
           </button>
         </div>
       )}

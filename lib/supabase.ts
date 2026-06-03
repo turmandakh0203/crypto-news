@@ -91,6 +91,21 @@ export async function getNewsCategory(
   return { news, hasMore: news.length === limit };
 }
 
+export async function getCategoryBySlug(
+  slug: string,
+): Promise<Category | null> {
+  const { data, error } = await supabaseServer()
+    .from("categories")
+    .select(
+      "id, slug, name, nav_label, icon, section_label, line1, line2, description, sort_order, is_active",
+    )
+    .eq("slug", slug)
+    .eq("is_active", true)
+    .single();
+  if (error || !data) return null;
+  return data;
+}
+
 export async function getAllNews(): Promise<News[]> {
   const { data, error } = await supabaseServer()
     .from("news")
@@ -177,6 +192,44 @@ export async function getTotalViewCount(): Promise<number> {
     return 0;
   }
   return count ?? 0;
+}
+
+export async function getNewsByAuthor(authorName: string): Promise<News[]> {
+  const { data, error } = await supabaseServer()
+    .from("news")
+    .select(
+      `id, slug, title, lead, image_url, tags, category_id, created_at, published, author, author_role, ${CAT_SELECT}`,
+    )
+    .eq("published", true)
+    .eq("author", authorName)
+    .order("id", { ascending: false });
+  if (error) {
+    console.error("getNewsByAuthor:", error);
+    return [];
+  }
+  return (data ?? []).map(normalize);
+}
+
+export async function getAllAuthors(): Promise<
+  { name: string; role: string | null; count: number }[]
+> {
+  const { data, error } = await supabaseServer()
+    .from("news")
+    .select("author, author_role")
+    .eq("published", true)
+    .not("author", "is", null);
+  if (error || !data) return [];
+  const rows = data as { author: string | null; author_role: string | null }[];
+  const map = new Map<string, { role: string | null; count: number }>();
+  for (const row of rows) {
+    if (!row.author) continue;
+    const prev = map.get(row.author);
+    map.set(row.author, {
+      role: row.author_role ?? prev?.role ?? null,
+      count: (prev?.count ?? 0) + 1,
+    });
+  }
+  return [...map.entries()].map(([name, v]) => ({ name, ...v }));
 }
 
 export function formatDate(dateStr: string): string {

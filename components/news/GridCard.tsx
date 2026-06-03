@@ -43,6 +43,7 @@ export default function GridCard({ news, index }: Props) {
             src={news.image_url}
             alt={news.title}
             fill
+            priority={index === 0}
             className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
             sizes="33vw"
           />

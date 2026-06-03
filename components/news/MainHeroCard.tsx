@@ -40,7 +40,7 @@ export default function MainHeroCard({ news }: Props) {
             alt={news.title}
             fill
             className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-            sizes="100vw"
+            sizes="calc(100vw - 2rem)"
             priority
           />
         ) : (

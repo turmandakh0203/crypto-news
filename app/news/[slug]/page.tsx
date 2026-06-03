@@ -1,4 +1,5 @@
-export const revalidate = 60;
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -9,6 +10,7 @@ import {
   getRelatedNews,
   getViewCount,
   getCategories,
+  getAllNews,
 } from "@/lib/supabase";
 import ViewTracker from "@/components/news/ViewTracker";
 import { TAG_COLORS, PROSE_CLASSES } from "@/types/news";
@@ -24,6 +26,7 @@ import HeroParallax from "@/components/news/HeroParallax";
 import ViewCount from "@/components/news/ViewCount";
 import SectionFooter from "@/components/news/SectionFooter";
 import Comments from "@/components/news/Comments";
+import BackButton from "@/components/news/BackButton";
 import { getComments } from "@/lib/actions";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -51,8 +54,38 @@ export default async function NewsDetailPage({ params }: Props) {
     getComments(news.id),
   ]);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: news.title,
+    description: news.lead ?? "",
+    image: news.image_url ? [news.image_url] : [],
+    datePublished: news.created_at ?? new Date().toISOString(),
+    author: {
+      "@type": "Person",
+      name: news.author ?? "Криптологи",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Криптологи",
+      url: "https://crypto-news-toroo123s-projects.vercel.app",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://crypto-news-toroo123s-projects.vercel.app/ciphernews_icon_dark.svg",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://crypto-news-toroo123s-projects.vercel.app/news/${news.slug}`,
+    },
+  };
+
   return (
     <LandingLayout activeCategory={news.category} categories={categories}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ViewTracker newsId={news.id} />
       <ScrollProgress />
       <BackToTop />
@@ -61,13 +94,10 @@ export default async function NewsDetailPage({ params }: Props) {
         <HeroParallax imageUrl={news.image_url} alt={news.title}>
           <div className="absolute bottom-0 left-0 right-0 h-full bg-black/40" />
 
-          {/* Mobile: буцах товч — зүүн дээр */}
-          <Link
-            href="/news"
-            className="md:hidden absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-white/70 hover:text-white transition-colors"
-          >
+          {/* Буцах товч — зүүн дээр (бүх дэлгэц) */}
+          <BackButton className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-white/70 hover:text-white transition-colors">
             <span> ← </span> Буцах
-          </Link>
+          </BackButton>
 
           {/* Ангилал */}
           <div className="absolute top-5 left-1/2 -translate-x-1/2 md:block hidden">
@@ -108,9 +138,12 @@ export default async function NewsDetailPage({ params }: Props) {
                 {news.author && (
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-[1px] bg-accent/50" />
-                    <span className="text-[11px] font-mono text-white/70">
+                    <Link
+                      href={`/author/${encodeURIComponent(news.author)}`}
+                      className="text-[11px] font-mono text-white/70 hover:text-white transition-colors"
+                    >
                       {news.author}
-                    </span>
+                    </Link>
                     {news.author_role && (
                       <span className="text-[9px] text-white/60">
                         ({news.author_role})
@@ -134,7 +167,7 @@ export default async function NewsDetailPage({ params }: Props) {
         </HeroParallax>
 
         {/* ── Агуулга — hero-г давж эхэлнэ ── */}
-        <div className="max-w-[840px] mx-auto px-4 md:px-6 -mt-6 md:-mt-14 pt-10 md:pt-20 relative z-10">
+        <div className="max-w-[1040px] mx-auto px-4 md:px-6 -mt-6 md:-mt-14 pt-10 md:pt-20 relative z-10">
           {/* Tag-ууд */}
           {news.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-5">
@@ -211,17 +244,9 @@ export default async function NewsDetailPage({ params }: Props) {
               }
             })()}
 
-          {/* Буцах + хуваалцах */}
-          <div className="flex items-center justify-end md:justify-between pt-6 mt-8 border-t border-border">
-            <Link
-              href="/news"
-              className="hidden md:inline text-[9px] tracking-[0.14em] rounded-full uppercase font-ttNormsPro font-semibold text-muted border border-border px-3 py-1.5 hover:text-ink hover:border-muted transition-colors"
-            >
-              ← Буцах
-            </Link>
-            <div className="flex items-center">
-              <ShareButton title={news.title} slug={news.slug} />
-            </div>
+          {/* Desktop хуваалцах */}
+          <div className="hidden md:flex items-center justify-end pt-6">
+            <ShareButton title={news.title} slug={news.slug} />
           </div>
 
           {/* Холбоотой мэдээ */}
@@ -308,7 +333,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://ciphernews.mn/news/${slug}`,
+      url: `https://crypto-news-alpha.vercel.app/news/${slug}`,
       siteName: "Криптологи",
       ...(image && {
         images: [{ url: image, width: 1200, height: 630, alt: news.title }],
@@ -322,5 +347,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       ...(image && { images: [image] }),
     },
+    alternates: {
+      canonical: `https://crypto-news-alpha.vercel.app/news/${slug}`,
+    },
   };
+}
+
+export async function generateStaticParams() {
+  const articles = await getAllNews();
+  return articles.map((a) => ({ slug: a.slug }));
 }

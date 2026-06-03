@@ -264,8 +264,8 @@ export function ShareIcon({ className }: IconProps) {
       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         {" "}
@@ -278,13 +278,13 @@ export function ShareIcon({ className }: IconProps) {
           d="M14 6.5L9 10"
           stroke="currentColor"
           strokeWidth="1.5"
-          stroke-linecap="round"
+          strokeLinecap="round"
         ></path>{" "}
         <path
           d="M14 17.5L9 14"
           stroke="currentColor"
           strokeWidth="1.5"
-          stroke-linecap="round"
+          strokeLinecap="round"
         ></path>{" "}
         <path
           d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z"

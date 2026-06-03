@@ -1,19 +1,15 @@
 import Link from "next/link";
-
-const CATEGORIES = [
-  { name: "Криптограф", slug: "Криптограф" },
-  { name: "Мэдээ", slug: "Мэдээ" },
-  { name: "Криптоанализ", slug: "Криптоанализ" },
-  { name: "Кодлол", slug: "Кодлол" },
-];
+import { getCategories } from "@/lib/supabase";
 
 const QUICK_LINKS = [
   { label: "Нүүр хуудас", href: "/news" },
-  { label: "Сүүлийн мэдээ", href: "/news" },
+  { label: "Бидний тухай", href: "/about" },
+  { label: "Холбоо барих", href: "/contact" },
 ];
 
-export default function SectionFooter() {
+export default async function SectionFooter() {
   const year = new Date().getFullYear();
+  const categories = await getCategories();
 
   return (
     <footer className="bg-bg mt-0">
@@ -43,29 +39,23 @@ export default function SectionFooter() {
               Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй
               байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.
             </p>
-            {/* <div className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-[12px] tracking-[0.14em] text-muted font-ttNormsPro">
-                Шинэ мэдээ тогтмол нийтлэгддэг
-              </span>
-            </div> */}
           </div>
 
           {/* ── Ангилалууд ── */}
           <div>
             <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted font-ttNormsPro font-semibold mb-5 flex items-center gap-2">
               <div className="w-2 h-[1.5px] bg-accent" />
-              Ангилалууд
+              Ангиллууд
             </h3>
             <ul className="space-y-3">
-              {CATEGORIES.map((cat) => (
-                <li key={cat.slug}>
+              {categories.map((cat) => (
+                <li key={cat.id}>
                   <Link
-                    href={`/news?scroll=${encodeURIComponent(cat.slug)}`}
+                    href={`/category/${cat.slug}`}
                     className="text-[13px] text-muted hover:text-ink font-ttNormsPro transition-colors duration-200 flex items-center gap-2 group"
                   >
                     <span className="w-0 group-hover:w-2 h-[1px] bg-accent transition-all duration-200 overflow-hidden" />
-                    {cat.name}
+                    {cat.nav_label ?? cat.name}
                   </Link>
                 </li>
               ))}

@@ -1,10 +1,20 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import { getHeroNews, getNewsCategory, getCategories } from "@/lib/supabase";
 import LandingLayout from "@/components/news/LandingLayout";
 import MainHeroCard from "@/components/news/MainHeroCard";
 import NewsSection from "@/components/news/NewsSection";
 import SectionFooter from "@/components/news/SectionFooter";
+
+export const metadata: Metadata = {
+  title: "Мэдээ | Криптологи",
+  description:
+    "Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.",
+  alternates: {
+    canonical: "https://crypto-news-alpha.vercel.app/news",
+  },
+};
 
 const INITIAL_PER_SECTION = 5;
 
@@ -42,8 +52,3 @@ export default async function NewsPage() {
     </LandingLayout>
   );
 }
-
-export const metadata = {
-  title: "Crypto News | Криптологи",
-  description: "Мэдээ, кодлол, криптоанализ, криптографийн шинэ мэдээ",
-};
