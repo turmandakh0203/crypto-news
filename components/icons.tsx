@@ -348,3 +348,23 @@ export function CalenderIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function UserIcon({ className }: IconProps) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      className={className}
+    >
+      <circle cx="6" cy="4" r="2.5" stroke="currentColor" strokeWidth="1.2" />
+      <path
+        d="M1.5 10.5c0-2.21 2.015-4 4.5-4s4.5 1.79 4.5 4"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}

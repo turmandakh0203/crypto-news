@@ -55,12 +55,12 @@ export const TAG_COLORS: Record<
   0: {
     color: "#B070E8",
     bg: "rgba(176,112,232,0.1)",
-    border: "rgba(176,112,232,0.8)",
+    border: "rgba(176,112,232)",
   },
   1: {
-    color: "#E63329",
+    color: "#FFA726",
     bg: "rgba(230,51,41,0.1)",
-    border: "rgba(230,51,41,0.8)",
+    border: "rgb(255, 167, 38, 0.8)",
   },
   2: {
     color: "#3060B0",

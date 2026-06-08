@@ -13,6 +13,12 @@ import {
 } from "@/components/icons";
 import type { Category } from "@/types/news";
 import NewsTicker from "@/components/news/NewsTicker";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   LockIcon,
@@ -62,6 +68,7 @@ function LandingLayoutInner({
 
   const [active, setActive] = useState(activeCategory ?? "");
   const [mounted, setMounted] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   useEffect(() => {
     if (activeCategory && pathname !== "/news") setActive(activeCategory);
@@ -161,6 +168,90 @@ function LandingLayoutInner({
         />
 
         <div className="flex items-center h-14 px-4 md:px-8 gap-3">
+          {/* Mobile hamburger */}
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger className="md:hidden flex items-center justify-center w-8 h-8 text-ink">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M2 4h14M2 9h14M2 14h14"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              showCloseButton={false}
+              className="w-72 bg-bg border-border p-0 flex flex-col"
+            >
+              {/* Sheet header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+                <button
+                  onClick={handleLogoClick}
+                  className="flex items-center gap-2"
+                >
+                  <img src={logo} alt="Logo" className="w-6 h-6" />
+                  <span
+                    className="text-[14px] font-ttNormsPro font-bold tracking-[0.12em] grid justify-items-start"
+                    style={{ lineHeight: 1 }}
+                  >
+                    <span className="text-ink">CRYPTO</span>
+                    <span className="text-accent">NEWS</span>
+                  </span>
+                </button>
+                <SheetClose className="text-muted hover:text-ink transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M2 2l12 12M14 2L2 14"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </SheetClose>
+              </div>
+              {/* Sheet nav items */}
+              <nav className="flex flex-col px-3 py-4 gap-1">
+                <button
+                  onClick={() => {
+                    handleLogoClick();
+                    setSheetOpen(false);
+                  }}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-lg text-[12px] tracking-[0.08em] uppercase font-ttNormsPro font-semibold transition-colors ${
+                    active === ""
+                      ? "text-accent bg-accent/10"
+                      : "text-ink hover:bg-surface"
+                  }`}
+                >
+                  <HomeIcon className="w-4 h-4" />
+                  Нүүр
+                </button>
+                {categories.map((cat) => {
+                  const Icon = ICON_MAP[cat.icon ?? ""] ?? NewspaperIcon;
+                  const label = cat.nav_label ?? cat.name;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        handleCategoryClick(cat.name);
+                        setSheetOpen(false);
+                      }}
+                      className={`flex items-center gap-3 px-3 py-3 rounded-lg text-[12px] tracking-[0.08em] uppercase font-ttNormsPro font-semibold transition-colors ${
+                        active === cat.name
+                          ? "text-accent bg-accent/10"
+                          : "text-ink hover:bg-surface"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {label}
+                    </button>
+                  );
+                })}
+              </nav>
+            </SheetContent>
+          </Sheet>
+
           {/* Logo */}
           <button
             onClick={handleLogoClick}
@@ -169,7 +260,7 @@ function LandingLayoutInner({
             <img
               src={logo}
               alt="Logo"
-              className="w-7 h-7 group-hover:scale-110 transition-transform duration-200"
+              className="w-7 h-7 group-hover:scale-110 transition-transform duration-200 md:block hidden"
             />
             <span
               className="text-[15px] font-ttNormsPro font-bold tracking-[0.12em] grid justify-items-start"
@@ -220,7 +311,7 @@ function LandingLayoutInner({
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-3 ml-auto">
             <SearchButton />
             <ThemeToggle />
           </div>
@@ -228,45 +319,7 @@ function LandingLayoutInner({
       </header>
 
       {/* ── Main content ── */}
-      <main className="flex-1 min-w-0 pb-16 md:pb-0 ">{children}</main>
-
-      {/* ── Mobile bottom tab bar ── */}
-      <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-bg border-t border-border flex"
-        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-      >
-        <button
-          onClick={handleLogoClick}
-          className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${
-            active === "" ? "text-accent" : "text-muted hover:text-ink"
-          }`}
-        >
-          <HomeIcon className="w-5 h-5" />
-          <span className="text-[8px] tracking-[0.06em] uppercase font-ttNormsPro">
-            Нүүр
-          </span>
-        </button>
-        {categories.map((cat) => {
-          const Icon = ICON_MAP[cat.icon ?? ""] ?? NewspaperIcon;
-          const label = cat.nav_label ?? cat.name;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryClick(cat.name)}
-              className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${
-                active === cat.name
-                  ? "text-accent"
-                  : "text-muted hover:text-ink"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="text-[8px] tracking-[0.06em] uppercase font-ttNormsPro">
-                {label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
+      <main className="flex-1 min-w-0">{children}</main>
     </div>
   );
 }

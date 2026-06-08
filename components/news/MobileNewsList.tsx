@@ -13,7 +13,7 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
   return (
     <Link
       href={`/news/${news.slug}`}
-      className="group block mx-2 mb-1 rounded-xl overflow-hidden border border-border border-t-0 relative"
+      className="group block mx-4 mb-1 rounded-xl overflow-hidden border border-border border-t-0 relative"
     >
       <div
         className="absolute inset-x-0 top-0 h-[1px] z-10"
@@ -77,7 +77,7 @@ function ListCard({ news, index }: { news: News; index: number }) {
   return (
     <Link
       href={`/news/${news.slug}`}
-      className="group flex items-center gap-3 px-4 py-3 border-b border-border hover:bg-surface transition-colors"
+      className="group flex items-center gap-3 px-6 py-3 border-b border-border hover:bg-surface transition-colors"
     >
       <div className="relative w-[72px] h-[72px] rounded-lg overflow-hidden flex-shrink-0">
         {news.image_url ? (

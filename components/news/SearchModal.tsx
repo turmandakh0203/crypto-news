@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { searchNews } from "@/lib/actions";
@@ -69,17 +70,11 @@ export default function SearchModal({ onClose }: Props) {
       navigate(results[selected].slug);
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4"
+      className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-start justify-center pt-[10vh] px-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
       {/* Modal */}
       <div className="relative w-full max-w-[600px] bg-bg border border-border rounded-3xl overflow-hidden shadow-2xl">
         {/* Input */}
@@ -150,6 +145,7 @@ export default function SearchModal({ onClose }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

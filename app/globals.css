@@ -373,3 +373,15 @@ img[data-floating="true"] {
 [data-type="column"] {
   min-width: 0; /* grid overflow-оос сэргийлнэ */
 }
+
+/* shadcn Sheet-д хэрэгтэй CSS variables */
+:root,
+.dark {
+  --popover: #0d0d0d;
+  --popover-foreground: #f0ece0;
+  --radius: 0.5rem;
+}
+.light {
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+}

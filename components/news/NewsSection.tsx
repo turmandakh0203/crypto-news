@@ -66,7 +66,7 @@ export default function NewsSection({
           {/* Desktop: 2 HeroCard + GridCard + load more */}
           <div className="hidden md:block">
             {heroes.length > 0 && (
-              <div className="grid grid-cols-2 gap-px mb-px">
+              <div className="grid grid-cols-2 gap-px mb-px px-20">
                 {heroes.map((n, i) => (
                   <HeroCard
                     key={n.id}
@@ -77,7 +77,7 @@ export default function NewsSection({
               </div>
             )}
             {grid.length > 0 && (
-              <div className="grid grid-cols-3 gap-px mt-px">
+              <div className="grid grid-cols-3 gap-px mt-px px-20">
                 {grid.map((n, i) => (
                   <GridCard news={n} key={n.id} index={i} />
                 ))}

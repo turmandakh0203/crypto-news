@@ -56,7 +56,7 @@ export async function getHeroNews(): Promise<News | null> {
   const { data, error } = await supabaseServer()
     .from("news")
     .select(
-      `id, slug, title, lead, image_url, tags, category_id, created_at, published, ${CAT_SELECT}`,
+      `id, slug, title, lead, image_url, tags, category_id, content, created_at, author, author_role, published, ${CAT_SELECT}`,
     )
     .eq("published", true)
     .order("id", { ascending: false })
@@ -77,7 +77,7 @@ export async function getNewsCategory(
   const { data, error } = await supabaseServer()
     .from("news")
     .select(
-      `id, slug, title, lead, image_url, tags, category_id, created_at, published, ${CAT_INNER}`,
+      `id, slug, title, lead, image_url, tags, author, author_role, content, category_id, created_at, published, ${CAT_INNER}`,
     )
     .eq("published", true)
     .eq("categories.name", categoryName)

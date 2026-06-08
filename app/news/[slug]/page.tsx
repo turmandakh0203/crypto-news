@@ -28,6 +28,7 @@ import SectionFooter from "@/components/news/SectionFooter";
 import Comments from "@/components/news/Comments";
 import BackButton from "@/components/news/BackButton";
 import { getComments } from "@/lib/actions";
+import { UserIcon } from "@/components/icons";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -92,10 +93,10 @@ export default async function NewsDetailPage({ params }: Props) {
       <article className="min-h-screen bg-bg text-ink">
         {/* ── Hero зураг ── */}
         <HeroParallax imageUrl={news.image_url} alt={news.title}>
-          <div className="absolute bottom-0 left-0 right-0 h-full bg-black/40" />
+          <div className="absolute bottom-0 left-0 right-0 h-full bg-black/60" />
 
           {/* Буцах товч — зүүн дээр (бүх дэлгэц) */}
-          <BackButton className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-white/70 hover:text-white transition-colors">
+          <BackButton className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-white/70 hover:text-white transition-colors">
             <span> ← </span> Буцах
           </BackButton>
 
@@ -140,8 +141,9 @@ export default async function NewsDetailPage({ params }: Props) {
                     <div className="w-2 h-[1px] bg-accent/50" />
                     <Link
                       href={`/author/${encodeURIComponent(news.author)}`}
-                      className="text-[11px] font-mono text-white/70 hover:text-white transition-colors"
+                      className="text-[11px] flex items-center gap-1 font-mono text-white/70 hover:text-white transition-colors"
                     >
+                      <UserIcon className="w-2.5 h-2.5" />
                       {news.author}
                     </Link>
                     {news.author_role && (
@@ -296,10 +298,10 @@ export default async function NewsDetailPage({ params }: Props) {
                       <span className="text-[9px] tracking-[0.12em] uppercase text-muted font-ttNormsPro font-semibold">
                         {r.category}
                       </span>
-                      <p className="text-[13px] text-ink leading-[1.5] line-clamp-3 group-hover:text-accent transition-colors duration-300 font-ttnormspro">
+                      <p className="text-[13px] text-ink leading-[1.5] line-clamp-3 transition-colors duration-300 font-ttnormspro">
                         {r.title}
                       </p>
-                      <span className="mt-auto pt-2 text-[8px] tracking-[0.14em] uppercase text-accent font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="mt-auto text-ink pt-2 text-[9px] tracking-[0.14em] uppercase group-hover:text-accent font-mono  duration-300">
                         Дэлгэрэнгүй →
                       </span>
                     </div>
