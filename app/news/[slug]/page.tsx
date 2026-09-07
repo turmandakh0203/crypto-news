@@ -29,6 +29,7 @@ import Comments from "@/components/news/Comments";
 import BackButton from "@/components/news/BackButton";
 import { getComments } from "@/lib/actions";
 import { UserIcon } from "@/components/icons";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -69,15 +70,15 @@ export default async function NewsDetailPage({ params }: Props) {
     publisher: {
       "@type": "Organization",
       name: "Криптологи",
-      url: "https://crypto-news-toroo123s-projects.vercel.app",
+      url: "https://crypto-news-alpha.vercel.app",
       logo: {
         "@type": "ImageObject",
-        url: "https://crypto-news-toroo123s-projects.vercel.app/ciphernews_icon_dark.svg",
+        url: "https://crypto-news-alpha.vercel.app/ciphernews_icon_dark.svg",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://crypto-news-toroo123s-projects.vercel.app/news/${news.slug}`,
+      "@id": `https://crypto-news-alpha.vercel.app/news/${news.slug}`,
     },
   };
 
@@ -90,22 +91,22 @@ export default async function NewsDetailPage({ params }: Props) {
       <ViewTracker newsId={news.id} />
       <ScrollProgress />
       <BackToTop />
-      <article className="min-h-screen bg-bg text-ink">
+
+      {/* Буцах товч — scroll хийсэн ч байнга харагдана, hero-тэй ижил баганад зэрэгцэнэ */}
+      {/* <div className="fixed top-20 inset-x-0 z-30 pointer-events-none">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+          <BackButton className="pointer-events-auto inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-surface/80 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-ink/70 hover:text-ink hover:border-accent/40 transition-colors">
+            <span> ← </span> Буцах
+          </BackButton>
+        </div>
+      </div> */}
+
+      <article className="relative min-h-screen bg-bg text-ink">
+        <BackgroundBeams className="fixed inset-0 z-0" />
+
         {/* ── Hero зураг ── */}
         <HeroParallax imageUrl={news.image_url} alt={news.title}>
           <div className="absolute bottom-0 left-0 right-0 h-full bg-black/60" />
-
-          {/* Буцах товч — зүүн дээр (бүх дэлгэц) */}
-          <BackButton className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-border rounded-full backdrop-blur-md text-[9px] tracking-[0.12em] uppercase font-ttnormspro text-white/70 hover:text-white transition-colors">
-            <span> ← </span> Буцах
-          </BackButton>
-
-          {/* Ангилал */}
-          <div className="absolute top-5 left-1/2 -translate-x-1/2 md:block hidden">
-            <span className="text-[14px] tracking-[0.16em] uppercase text-accent font-bebas border-t-2 border-accent">
-              {news.category}
-            </span>
-          </div>
 
           {/* Гарчиг — хар давхаргын дунд байрлана */}
           <div className="absolute bottom-8 md:bottom-20 left-0 right-0 px-4 md:px-10">

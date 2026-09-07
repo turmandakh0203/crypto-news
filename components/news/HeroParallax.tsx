@@ -31,7 +31,7 @@ export default function HeroParallax({ imageUrl, alt, children }: Props) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[280px] md:h-[430px] overflow-hidden"
+      className="relative max-w-[1400px] mx-auto h-[280px] md:h-[430px] overflow-hidden"
     >
       <div
         ref={imgWrapRef}
@@ -44,7 +44,7 @@ export default function HeroParallax({ imageUrl, alt, children }: Props) {
             alt={alt}
             fill
             className="object-cover"
-            sizes="100vw"
+            sizes="(max-width: 1400px) 100vw, 1400px"
             priority
           />
         ) : (

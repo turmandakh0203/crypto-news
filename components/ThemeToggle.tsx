@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Цагаан горимд шилжих" : "Харанхуй горимд шилжих"}
       title={isDark ? "Цагаан горим" : "Харанхуй горим"}
-      className="relative w-10 h-6 rounded-full overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none transition-all duration-500"
+      className="relative w-10 h-6 rounded-full border border-muted  overflow-hidden flex-shrink-0 cursor-pointer focus:outline-none transition-all duration-500"
       style={{
         background: isDark
           ? "linear-gradient(160deg, #0a0a1f 0%, #111130 100%)"
@@ -90,7 +90,7 @@ export default function ThemeToggle() {
 
       {/* Knob — sun / moon */}
       <div
-        className="absolute top-0.5 w-5 h-5 rounded-full"
+        className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
         style={{
           left: isDark ? "calc(100% - 22px)" : "2px",
           transition:

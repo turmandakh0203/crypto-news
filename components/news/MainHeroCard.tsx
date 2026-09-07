@@ -209,96 +209,102 @@ export default function MainHeroCard({ news }: Props) {
       </AnimatePresence>
 
       {/* ── Main hero card ── */}
-      <motion.div
-        layoutId={`main-hero-${news.id}-${id}`}
-        onClick={() => setActive(true)}
-        className="relative rounded-xl overflow-hidden my-6 mx-4 md:mx-20 cursor-pointer"
-      >
-        <div className="corner-tl z-10 px-4" />
-        <div className="corner-br z-10 px-4" />
+      <div className="px-4 md:px-8">
+        <motion.div
+          layoutId={`main-hero-${news.id}-${id}`}
+          onClick={() => setActive(true)}
+          className="relative rounded-xl overflow-hidden my-6 mx-auto max-w-[1400px] cursor-pointer"
+        >
+          <div className="corner-tl z-10 px-4" />
+          <div className="corner-br z-10 px-4" />
 
-        <div className="group relative overflow-hidden h-[420px] md:h-[620px]">
-          <motion.div
-            layoutId={`main-hero-img-${news.id}-${id}`}
-            className="absolute inset-0"
-          >
-            {news.image_url ? (
-              <Image
-                src={news.image_url}
-                alt={news.title}
-                fill
-                className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-                sizes="calc(100vw - 2rem)"
-                priority
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
-            )}
-          </motion.div>
-
-          <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
-
-          <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 md:px-10 md:pb-10 z-10">
-            <div className="reveal-wrap mb-4">
-              <div
-                className={`reveal-up anim-delay-1 flex items-center gap-3 ${v}`}
-              >
-                <div
-                  className={`h-[1.5px] w-6 bg-[#e63329] anim-slide-r anim-delay-1 ${v}`}
+          <div className="group relative overflow-hidden h-[420px] md:h-[620px]">
+            <motion.div
+              layoutId={`main-hero-img-${news.id}-${id}`}
+              className="absolute inset-0"
+            >
+              {news.image_url ? (
+                <Image
+                  src={news.image_url}
+                  alt={news.title}
+                  fill
+                  className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
+                  sizes="(max-width: 1400px) 100vw, 1400px"
+                  priority
                 />
-                <span className="text-[12px] uppercase text-[#e63329] font-ttNormsPro font-bold tracking-[0.18em]">
-                  Сүүлийн мэдээ — {news.tags?.[0] || news.category}
-                </span>
-              </div>
-            </div>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
+              )}
+            </motion.div>
 
-            <div className="mb-4 reveal-wrap">
-              <h1
-                className={`reveal-up font-ttNormsPro font-bold text-[36px] md:text-[80px] leading-[1.2] w-full md:w-1/2 ${v}`}
-                style={{
-                  animationDelay: "0.1s",
-                  backgroundImage:
-                    "linear-gradient(90deg, rgb(255,201,134) 0%, rgb(254,39,38) 100%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                {news.title}
-              </h1>
-            </div>
+            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
 
-            <div className="reveal-wrap mb-6">
-              <div className={`reveal-up anim-delay-4 ${v}`}>
-                <p className="line-clamp-2 text-[14px] md:text-[16px] text-white/65 leading-[1.75] w-full md:w-1/2 font-light">
-                  {news.lead}
-                </p>
-              </div>
-            </div>
-
-            <div className="reveal-wrap">
-              <div className={`reveal-up anim-delay- ${v}`}>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3 text-white/50 text-[12px] font-mono">
-                    {news.created_at && (
-                      <span className="flex items-center gap-1.5">
-                        <CalenderIcon className="w-3 h-3" />
-                        {formatDate(news.created_at)}
-                      </span>
-                    )}
-                  </div>
-                  <span className="mt-3 inline-flex items-center gap-2 px-3 py-1 tracking-[0.05em] rounded-full text-orange-400 group-hover:bg-accent group-hover:text-white font-medium text-sm flex-shrink-0 transition-colors">
-                    Дэлгэрэнгүй
-                    <span className="group-hover:translate-x-1 transition-transform">
-                      →
-                    </span>
+            <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 md:px-10 md:pb-10 z-10">
+              <div className="reveal-wrap mb-4">
+                <div
+                  className={`reveal-up anim-delay-1 flex items-center gap-3 ${v}`}
+                >
+                  <div
+                    className={`h-[1.5px] w-6 bg-[#e63329] anim-slide-r anim-delay-1 ${v}`}
+                  />
+                  <span className="text-[12px] uppercase text-[#e63329] font-ttNormsPro font-bold tracking-[0.18em]">
+                    Сүүлийн мэдээ — {news.tags?.[0] || news.category}
                   </span>
+                </div>
+              </div>
+
+              <div className="mb-4 reveal-wrap">
+                <div
+                  className={`reveal-up ${v}`}
+                  style={{ animationDelay: "0.1s" }}
+                >
+                  <h1
+                    className="font-ttNormsPro font-bold text-[30px] sm:text-[36px] md:text-[44px] lg:text-[54px] xl:text-[64px] 2xl:text-[70px] leading-[1.1] md:leading-[1.2] w-full xl:w-1/2 2xl:w-3/5 line-clamp-3"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(90deg, rgb(255,201,134) 0%, rgb(254,39,38) 100%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    {news.title}
+                  </h1>
+                </div>
+              </div>
+
+              <div className="reveal-wrap mb-6">
+                <div className={`reveal-up anim-delay-4 ${v}`}>
+                  <p className="line-clamp-2 text-[14px] md:text-[16px] text-white/65 leading-[1.75] w-full md:w-1/2 font-light">
+                    {news.lead}
+                  </p>
+                </div>
+              </div>
+
+              <div className="reveal-wrap">
+                <div className={`reveal-up anim-delay-5 ${v}`}>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3 text-white/50 text-[12px] font-mono">
+                      {news.created_at && (
+                        <span className="flex items-center gap-1.5">
+                          <CalenderIcon className="w-3 h-3" />
+                          {formatDate(news.created_at)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="mt-3 inline-flex items-center gap-2 px-3 py-1 tracking-[0.05em] rounded-full text-orange-400 group-hover:bg-accent group-hover:text-white font-medium text-sm flex-shrink-0 transition-colors">
+                      Дэлгэрэнгүй
+                      <span className="group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </>
   );
 }

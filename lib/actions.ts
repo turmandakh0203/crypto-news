@@ -2,6 +2,13 @@
 import { createClient } from "@supabase/supabase-js";
 import { getNewsCategory, LOAD_MORE_SIZE } from "@/lib/supabase";
 import type { Comment } from "@/types/news";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
+
+// Matches the maxLength attributes on the comment form inputs
+// (components/news/Comments.tsx) — enforced again here since server
+// actions can be invoked directly, bypassing the HTML form.
+const MAX_COMMENT_BODY_LENGTH = 1000;
+const MAX_COMMENT_NAME_LENGTH = 60;
 
 function supabase() {
   return createClient(
@@ -19,6 +26,8 @@ export async function loadMoreCategoryNews(
 }
 
 export async function trackViewAction(newsId: number) {
+  const ip = await getClientIp();
+  if (!rateLimit(`view:${ip}`, 60, 5 * 60 * 1000)) return;
   const { error } = await supabase()
     .from("page_views")
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,27 +62,48 @@ export async function submitComment(
   honeypot: string,
 ): Promise<{ ok?: boolean; error?: string }> {
   if (honeypot) return { ok: true };
-  if (!data.author_name.trim() || !data.body.trim()) return { error: "required" };
-  if (data.body.trim().length < 3) return { error: "too_short" };
+  const name = data.author_name.trim();
+  const body = data.body.trim();
+  if (!name || !body) return { error: "required" };
+  if (body.length < 3) return { error: "too_short" };
+  if (name.length > MAX_COMMENT_NAME_LENGTH || body.length > MAX_COMMENT_BODY_LENGTH) {
+    return { error: "too_long" };
+  }
+
+  const ip = await getClientIp();
+  if (!rateLimit(`comment:${ip}`, 5, 10 * 60 * 1000)) {
+    return { error: "rate_limited" };
+  }
+
   const { error } = await supabase()
     .from("comments")
     .insert([{
       news_id: data.news_id,
-      author_name: data.author_name.trim(),
+      author_name: name,
       author_email: data.author_email?.trim() || null,
-      body: data.body.trim(),
+      body,
     }]);
   if (error) { console.error("submitComment:", error); return { error: "db" }; }
   return { ok: true };
 }
 
 export async function searchNews(q: string): Promise<SearchResult[]> {
-  if (q.trim().length < 2) return [];
+  const trimmed = q.trim();
+  if (trimmed.length < 2) return [];
+
+  const ip = await getClientIp();
+  if (!rateLimit(`search:${ip}`, 40, 60 * 1000)) return [];
+
+  // PostgREST's .or() takes a raw filter string where "," "." "(" ")" are
+  // syntax, and ILIKE treats "%" "_" as wildcards — strip all of these so
+  // user input can't inject extra filter conditions or wildcard patterns.
+  const safe = trimmed.replace(/[,.()%_]/g, " ").trim();
+  if (safe.length < 2) return [];
   const { data, error } = await supabase()
     .from("news")
     .select("id, slug, title, lead, category_id, image_url, categories(name)")
     .eq("published", true)
-    .or(`title.ilike.%${q}%,lead.ilike.%${q}%`)
+    .or(`title.ilike.%${safe}%,lead.ilike.%${safe}%`)
     .order("id", { ascending: false })
     .limit(8);
   if (error) {

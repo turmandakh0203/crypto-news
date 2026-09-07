@@ -5,6 +5,8 @@ const QUICK_LINKS = [
   { label: "Нүүр хуудас", href: "/news" },
   { label: "Бидний тухай", href: "/about" },
   { label: "Холбоо барих", href: "/contact" },
+  { label: "Нууцлалын бодлого", href: "/privacy" },
+  { label: "Үйлчилгээний нөхцөл", href: "/terms" },
 ];
 
 export default async function SectionFooter() {
@@ -35,7 +37,7 @@ export default async function SectionFooter() {
                 </span>
               </span>
             </Link>
-            <p className="text-[13px] text-muted leading-[1.8] tracking-[1.5px] font-ttNormsPro max-w-[260px] mb-6">
+            <p className="text-[13px] text-muted leading-[1.8] tracking-[1.5px] font-ttNormsPro max-w-[260px] mb-4">
               Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй
               байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.
             </p>
@@ -64,11 +66,11 @@ export default async function SectionFooter() {
 
           {/* ── Холбоос + мэдээлэл ── */}
           <div>
-            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted font-ttNormsPro font-semibold mb-5 flex items-center gap-2">
+            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted font-ttNormsPro font-semibold mb-2 flex items-center gap-2">
               <div className="w-2 h-[1.5px] bg-accent" />
               Холбоос
             </h3>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-3 mb-4">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href + link.label}>
                   <Link
@@ -81,21 +83,13 @@ export default async function SectionFooter() {
                 </li>
               ))}
             </ul>
-
-            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted font-ttNormsPro font-semibold mb-4 flex items-center gap-2">
-              <div className="w-2 h-[1.5px] bg-accent" />
-              Байршил
-            </h3>
-            <p className="text-[13px] text-muted font-ttNormsPro leading-[1.7]">
-              Улаанбаатар, Монгол Улс
-            </p>
           </div>
         </div>
       </div>
 
       {/* ── Copyright bar ── */}
       <div className="border-t border-border">
-        <div className="max-w-[1200px] mx-auto px-6 py-[14.5px] flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="max-w-[1280px] mx-auto px-6 py-[14.5px] flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-[12px] tracking-[0.14em] text-muted font-ttNormsPro uppercase">
             © 2024–{year} · CryptoLogy · v2.1.2
           </span>

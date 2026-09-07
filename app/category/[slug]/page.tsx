@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: Props) {
           </p>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {news.map((n, i) => (
                 <div key={n.id} className="bg-bg">
                   <GridCard news={n} index={i} />

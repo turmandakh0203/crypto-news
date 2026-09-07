@@ -199,7 +199,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
         <motion.div
           layoutId={`hero-${news.id}-${id}`}
           onClick={() => setActive(true)}
-          className="relative rounded-xl overflow-hidden border border-border m-2 cursor-pointer"
+          className="relative rounded-xl overflow-hidden border border-border cursor-pointer"
         >
           <div
             className="absolute inset-x-0 top-0 h-[1px] z-10"
@@ -219,7 +219,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
                   alt={news.title}
                   fill
                   className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-                  sizes="50vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 700px"
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
@@ -233,7 +233,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
             <div className="corner-tl" />
             <div className="corner-br" />
 
-            <div className="absolute inset-0 flex flex-col justify-end p-5 space-y-4 md:p-10 z-10">
+            <div className="absolute inset-0 flex flex-col justify-end p-5 space-y-4 md:p-8 z-10">
               <div className="reveal-wrap mb-2">
                 <div
                   className={`reveal-up anim-delay-1 flex items-center ${v}`}
@@ -247,7 +247,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
               <div className="pb-4 reveal-wrap">
                 <div className={`reveal-up anim-delay-2 ${v}`}>
                   <h2
-                    className="font-ttNormsPro font-medium text-[26px] md:text-[36px] w-full md:w-4/5 leading-[1.1] line-clamp-3"
+                    className="font-ttNormsPro font-medium text-[26px] md:text-[36px] w-full leading-[1.2] line-clamp-3"
                     style={{
                       backgroundImage:
                         "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
@@ -263,7 +263,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
 
               <div className="reveal-wrap mb-6">
                 <div className={`reveal-up anim-delay-4 ${v}`}>
-                  <p className="text-[13px] md:text-[15px] text-white/65 leading-[1.75] w-full md:w-4/5 font-SpaceGrotesk line-clamp-2">
+                  <p className="text-[13px] md:text-[15px] text-white/65 leading-[1.75] w-full font-SpaceGrotesk line-clamp-2">
                     {news.lead}
                   </p>
                 </div>

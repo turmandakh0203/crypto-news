@@ -38,7 +38,7 @@ export default function DesktopLoadMore({
   return (
     <>
       {items.length > 0 && (
-        <div className="grid grid-cols-3 gap-px mt-px px-20">
+        <div className="grid grid-cols-3 gap-4 mt-4">
           {items.map((n, i) => (
             <GridCard news={n} key={n.id} index={i} />
           ))}

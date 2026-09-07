@@ -203,7 +203,7 @@ export default function GridCard({ news, index }: Props) {
         <motion.div
           layoutId={`card-${news.id}-${id}`}
           onClick={() => setActive(true)}
-          className="relative m-2 rounded-xl overflow-hidden border border-border border-t-0 cursor-pointer"
+          className="relative rounded-xl overflow-hidden border border-border border-t-0 cursor-pointer"
         >
           {/* Gradient top border */}
           <div
@@ -214,7 +214,7 @@ export default function GridCard({ news, index }: Props) {
             }}
           />
 
-          <div className="group relative overflow-hidden min-h-[280px] hover:bg-surface transition-colors">
+          <div className="group relative overflow-hidden min-h-[300px] hover:bg-surface transition-colors">
             <motion.div
               layoutId={`image-${news.id}-${id}`}
               className="absolute inset-0"
@@ -226,7 +226,7 @@ export default function GridCard({ news, index }: Props) {
                   fill
                   priority={index === 0}
                   className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-                  sizes="33vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1400px) 33vw, 460px"
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]">
@@ -239,7 +239,7 @@ export default function GridCard({ news, index }: Props) {
             <div className="corner-tl" />
             <div className="corner-br" />
 
-            <div className="absolute inset-0 flex flex-col justify-end p-5 space-y-3 md:p-8">
+            <div className="absolute inset-0 flex flex-col justify-end p-5 space-y-4">
               {news.tags?.[0] && (
                 <div className="reveal-wrap mb-1 self-start">
                   <div
@@ -255,24 +255,26 @@ export default function GridCard({ news, index }: Props) {
                 </div>
               )}
               <div className="reveal-wrap">
-                <h3
-                  className={`reveal-up anim-delay-3 font-ttNormsPro w-full md:w-4/5 text-[18px] md:text-[22px] leading-[1.2] ${v}`}
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  {news.title}
-                </h3>
+                <div className={`reveal-up anim-delay-3 ${v}`}>
+                  <h3
+                    className="font-ttNormsPro w-full text-[18px] md:text-[22px] leading-[1.3] line-clamp-3"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    {news.title}
+                  </h3>
+                </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="reveal-wrap">
                   <div className={`reveal-up anim-delay-3 ${v}`}>
-                    <p className="text-[13px] text-white/70 font-SpaceGrotesk w-4/5 tracking-[0.05em] leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
+                    <p className="text-[13px] text-white/70 font-SpaceGrotesk w-full tracking-[0.05em] leading-[1.6] line-clamp-2 group-hover:text-white/90 transition-colors">
                       {news.lead}
                     </p>
                   </div>

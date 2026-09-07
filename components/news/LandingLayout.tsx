@@ -156,7 +156,7 @@ function LandingLayoutInner({
 
       {/* ── Top navigation header ── */}
       <header
-        className={`sticky top-0 z-20 border-b border-border transition-transform duration-300 bg-surface/30 backdrop-blur-2xl ${headerHidden ? "-translate-y-full" : ""}`}
+        className={`sticky top-0 z-20 border-b border-border transition-transform duration-300 bg-surface/80 backdrop-blur-2xl ${headerHidden ? "-translate-y-full" : ""}`}
       >
         {/* Top accent gradient line */}
         <div
@@ -167,7 +167,7 @@ function LandingLayoutInner({
           }}
         />
 
-        <div className="flex items-center h-14 px-4 md:px-8 gap-3">
+        <div className="flex items-center h-14 gap-3 max-w-[1400px] mx-auto">
           {/* Mobile hamburger */}
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger className="md:hidden flex items-center justify-center w-8 h-8 text-ink">
@@ -278,7 +278,7 @@ function LandingLayoutInner({
           <nav className="hidden md:flex items-center justify-center flex-1">
             <button
               onClick={handleLogoClick}
-              className={`relative px-3 h-14 text-[11px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
+              className={`relative px-3 h-14 text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
                 active === ""
                   ? "text-accent"
                   : "text-ink hover:text-muted hover:bg-surface/60 rounded"
@@ -295,7 +295,7 @@ function LandingLayoutInner({
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`relative px-3 h-14 text-[11px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
+                  className={`relative px-3 h-14 text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
                     active === cat.name
                       ? "text-accent"
                       : "text-ink hover:text-muted hover:bg-surface/60 rounded"

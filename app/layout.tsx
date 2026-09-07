@@ -35,6 +35,7 @@ const ttNormsPro = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://crypto-news-alpha.vercel.app"),
   title: "Crypto News | Криптологи",
   description: "Криптографийн шинэ мэдээ, судалгаа, шинжилгээ",
   manifest: "/manifest.json",
@@ -67,6 +68,12 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
         <link rel="apple-touch-icon" href="/ciphernews_icon_white.png" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Криптологи RSS"
+          href="/rss.xml"
+        />
         <meta name="theme-color" content="#0a0a0a" />
       </head>
       <body

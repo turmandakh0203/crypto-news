@@ -158,13 +158,18 @@ export async function getRelatedNews(
 }
 
 export async function getViewCount(newsId: number): Promise<number> {
+  // Uses a short revalidate window (not no-store) so this can be called from
+  // statically-generated pages ([slug]/page.tsx) without Next.js flagging
+  // "Dynamic server usage" during build. The client re-fetches a live count
+  // via /api/views/[newsId] shortly after mount (see components/news/ViewCount.tsx),
+  // so this only needs to seed a reasonably fresh initial value.
   const client = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       global: {
         fetch: (url: RequestInfo | URL, options: RequestInit = {}) =>
-          fetch(url, { ...options, cache: "no-store" }),
+          fetch(url, { ...options, next: { revalidate: 30 } }),
       },
     },
   );
