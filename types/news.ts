@@ -28,6 +28,8 @@ export type News = {
   exercise_config?: string;
   author?: string;
   author_role?: string;
+  source_name?: string;
+  source_url?: string;
 };
 
 export type CommentStatus = "pending" | "published" | "spam";
@@ -82,7 +84,7 @@ export const PROSE_CLASSES = [
   "prose max-w-none dark:prose-invert",
   'prose-h2:font-["TT_Norms_Pro"] prose-h2:text-[22px] prose-h2:tracking-wide prose-h2:font-semibold prose-h2:text-ink prose-h2:mt-12 prose-h2:mb-5',
   "prose-h3:text-[18px] prose-h3:font-semibold prose-h3:text-ink prose-h3:mt-8 prose-h3:mb-3",
-  "prose-p:text-muted prose-p:text-[15px] prose-p:leading-[1.4] prose-p:font-ttnormspro prose-p:mb-5",
+  "prose-p:text-muted prose-p:text-[17px] prose-p:leading-[1.6] prose-p:font-ttnormspro prose-p:mb-5",
   "prose-a:text-accent prose-a:no-underline hover:prose-a:underline",
   "prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[12px] prose-code:font-mono prose-code:before:content-none prose-code:after:content-none",
   "prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-pre:border-l-2 prose-pre:border-l-accent prose-pre:rounded-none prose-pre:text-[12px] prose-pre:leading-[1.4] prose-pre:my-5 prose-pre:overflow-x-auto",

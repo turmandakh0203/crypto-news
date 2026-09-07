@@ -28,7 +28,7 @@ import SectionFooter from "@/components/news/SectionFooter";
 import Comments from "@/components/news/Comments";
 import BackButton from "@/components/news/BackButton";
 import { getComments } from "@/lib/actions";
-import { UserIcon } from "@/components/icons";
+import { UserIcon, ExternalLinkIcon } from "@/components/icons";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -65,11 +65,11 @@ export default async function NewsDetailPage({ params }: Props) {
     datePublished: news.created_at ?? new Date().toISOString(),
     author: {
       "@type": "Person",
-      name: news.author ?? "Криптологи",
+      name: news.author ?? "Crypto News",
     },
     publisher: {
       "@type": "Organization",
-      name: "Криптологи",
+      name: "Crypto News",
       url: "https://crypto-news-alpha.vercel.app",
       logo: {
         "@type": "ImageObject",
@@ -80,6 +80,7 @@ export default async function NewsDetailPage({ params }: Props) {
       "@type": "WebPage",
       "@id": `https://crypto-news-alpha.vercel.app/news/${news.slug}`,
     },
+    ...(news.source_url && { isBasedOn: news.source_url }),
   };
 
   return (
@@ -102,7 +103,7 @@ export default async function NewsDetailPage({ params }: Props) {
       </div> */}
 
       <article className="relative min-h-screen bg-bg text-ink">
-        <BackgroundBeams className="fixed inset-0 z-0" />
+        <BackgroundBeams className="fixed inset-0 z-0" subtle />
 
         {/* ── Hero зураг ── */}
         <HeroParallax imageUrl={news.image_url} alt={news.title}>
@@ -191,6 +192,57 @@ export default async function NewsDetailPage({ params }: Props) {
                     </span>
                   );
                 },
+              )}
+            </div>
+          )}
+
+          {/* Бэлтгэсэн / Эх сурвалж / Эх нийтлэл */}
+          {(news.author || news.source_name || news.source_url) && (
+            <div className="flex flex-wrap gap-x-8 gap-y-3 mb-6 p-4 rounded-lg border border-border bg-surface/60">
+              {news.author && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] tracking-[0.16em] uppercase text-muted font-ttNormsPro font-semibold">
+                    Бэлтгэсэн
+                  </span>
+                  <Link
+                    href={`/author/${encodeURIComponent(news.author)}`}
+                    className="inline-flex items-center gap-1.5 text-[13px] text-ink hover:text-accent transition-colors font-medium"
+                  >
+                    <UserIcon className="w-3 h-3" />
+                    {news.author}
+                    {news.author_role && (
+                      <span className="text-muted font-normal">
+                        ({news.author_role})
+                      </span>
+                    )}
+                  </Link>
+                </div>
+              )}
+              {news.source_name && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] tracking-[0.16em] uppercase text-muted font-ttNormsPro font-semibold">
+                    Эх сурвалж
+                  </span>
+                  <span className="text-[13px] text-ink font-medium">
+                    {news.source_name}
+                  </span>
+                </div>
+              )}
+              {news.source_url && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] tracking-[0.16em] uppercase text-muted font-ttNormsPro font-semibold">
+                    Эх нийтлэл
+                  </span>
+                  <a
+                    href={news.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="inline-flex items-center gap-1.5 text-[13px] text-accent hover:underline font-medium"
+                  >
+                    Эх сурвалжийг үзэх
+                    <ExternalLinkIcon className="w-3 h-3" />
+                  </a>
+                </div>
               )}
             </div>
           )}
@@ -326,7 +378,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const news = await getNewsBySlug(slug);
   if (!news) return { title: "Мэдээ олдсонгүй" };
 
-  const title = `${news.title} | Криптологи`;
+  const title = `${news.title} | Crypto News`;
   const description = news.lead ?? undefined;
   const image = news.image_url ?? undefined;
 
@@ -337,7 +389,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: `https://crypto-news-alpha.vercel.app/news/${slug}`,
-      siteName: "Криптологи",
+      siteName: "Crypto News",
       ...(image && {
         images: [{ url: image, width: 1200, height: 630, alt: news.title }],
       }),

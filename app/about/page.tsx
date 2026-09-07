@@ -4,7 +4,7 @@ import SectionFooter from "@/components/news/SectionFooter";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Бидний тухай | Криптологи",
+  title: "Бидний тухай | Crypto News",
   description:
     "Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.",
 };
@@ -60,7 +60,7 @@ export default async function AboutPage() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-5 h-[1.5px] bg-accent" />
             <span className="text-[10px] tracking-[0.22em] uppercase text-accent font-ttNormsPro font-semibold">
-              Криптологи · 2024
+              Crypto News · 2024
             </span>
           </div>
 
@@ -121,7 +121,7 @@ export default async function AboutPage() {
             </div>
             <div>
               <p className="text-[14px] text-muted leading-[1.9] font-ttNormsPro mb-4">
-                Криптологи нь судлаачид, оюутнууд, хөгжүүлэгчид болон мэдээллийн
+                Crypto News нь судлаачид, оюутнууд, хөгжүүлэгчид болон мэдээллийн
                 аюулгүй байдалд сонирхолтой хэн бүхэнд зориулсан тавцан юм.
               </p>
               <p className="text-[14px] text-muted leading-[1.9] font-ttNormsPro">
@@ -197,10 +197,10 @@ export default async function AboutPage() {
                 <div className="flex items-center gap-3 text-[13px] text-muted font-ttNormsPro">
                   <span className="text-accent">→</span>
                   <a
-                    href="mailto:info@ciphernews.mn"
+                    href="mailto:info@cryptonews.mn"
                     className="hover:text-ink transition-colors"
                   >
-                    info@ciphernews.mn
+                    info@cryptonews.mn
                   </a>
                 </div>
               </div>

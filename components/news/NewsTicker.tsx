@@ -1,11 +1,37 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useReducedMotion } from "motion/react";
 
 type TickerItem = { title: string; slug: string };
 
+function PlayIcon({ className }: { className?: string }) {
+  return (
+    <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className={className}>
+      <path d="M2 1.2v7.6L8.5 5 2 1.2z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function PauseIcon({ className }: { className?: string }) {
+  return (
+    <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className={className}>
+      <rect x="1.5" y="1" width="2.4" height="8" fill="currentColor" />
+      <rect x="6.1" y="1" width="2.4" height="8" fill="currentColor" />
+    </svg>
+  );
+}
+
 export default function NewsTicker() {
   const [items, setItems] = useState<TickerItem[]>([]);
+  // Хэрэглэгч ОС-ийн "хөдөлгөөн багасгах" тохиргоог идэвхжүүлсэн бол
+  // урсгалыг эхнээс нь зогсоосон байдлаар эхлүүлнэ.
+  const prefersReducedMotion = useReducedMotion();
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (prefersReducedMotion) setPaused(true);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     fetch("/api/ticker")
@@ -22,7 +48,9 @@ export default function NewsTicker() {
     <div className="bg-accent h-7 flex items-center overflow-hidden relative z-50 select-none">
       {/* Зүүн тал — ШИНЭ МЭДЭЭ шошго */}
       <div className="flex-shrink-0 flex items-center gap-2 px-3 h-full bg-black/20 border-r border-white/20 z-10">
-        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+        <span
+          className={`w-1.5 h-1.5 rounded-full bg-white ${paused ? "" : "animate-pulse"}`}
+        />
         <span className="text-[9px] tracking-[0.22em] uppercase font-ttNormsPro font-bold text-white whitespace-nowrap">
           Шинэ мэдээ
         </span>
@@ -30,11 +58,15 @@ export default function NewsTicker() {
 
       {/* Гүйдэг хэсэг */}
       <div className="flex-1 overflow-hidden">
-        <div className="flex animate-ticker whitespace-nowrap">
+        <div
+          className="flex animate-ticker whitespace-nowrap"
+          style={{ animationPlayState: paused ? "paused" : undefined }}
+        >
           {doubled.map((item, i) => (
             <Link
               key={i}
               href={`/news/${item.slug}`}
+              tabIndex={paused ? undefined : -1}
               className="inline-flex items-center gap-3 px-5 text-[11px] tracking-[0.08em] font-ttNormsPro uppercase text-white font-semi-bold hover:text-white transition-colors shrink-0"
             >
               <span className="text-white text-[8px]">►</span>
@@ -43,6 +75,17 @@ export default function NewsTicker() {
           ))}
         </div>
       </div>
+
+      {/* Зогсоох / үргэлжлүүлэх товч */}
+      <button
+        type="button"
+        onClick={() => setPaused((p) => !p)}
+        aria-label={paused ? "Урсдаг мэдээг үргэлжлүүлэх" : "Урсдаг мэдээг зогсоох"}
+        aria-pressed={paused}
+        className="flex-shrink-0 flex items-center justify-center w-7 h-full text-white/80 hover:text-white bg-black/20 border-l border-white/20 z-10 transition-colors"
+      >
+        {paused ? <PlayIcon /> : <PauseIcon />}
+      </button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 {
   "name": "Crypto News",
-  "short_name": "CryptoNews",
+  "short_name": "Crypto News",
   "description": "Криптографийн шинэ мэдээ, судалгаа, шинжилгээ",
   "start_url": "/news",
   "display": "standalone",

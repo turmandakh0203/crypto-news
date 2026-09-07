@@ -72,6 +72,7 @@ export default function NewsSection({
                     key={n.id}
                     news={n}
                     direction={i === 0 ? "left" : "right"}
+                    index={i}
                   />
                 ))}
               </div>

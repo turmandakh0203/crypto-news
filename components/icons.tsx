@@ -349,6 +349,26 @@ export function CalenderIcon({ className }: IconProps) {
   );
 }
 
+export function ExternalLinkIcon({ className }: IconProps) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      className={className}
+    >
+      <path
+        d="M5 2H2.5A1.5 1.5 0 001 3.5v6A1.5 1.5 0 002.5 11h6A1.5 1.5 0 0010 9.5V7M7 1h4v4M10.5 1.5L5.5 6.5"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function UserIcon({ className }: IconProps) {
   return (
     <svg

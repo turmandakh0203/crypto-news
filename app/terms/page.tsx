@@ -4,15 +4,15 @@ import SectionFooter from "@/components/news/SectionFooter";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Үйлчилгээний нөхцөл | Криптологи",
-  description: "Криптологи сайтыг ашиглах дүрэм, журам.",
+  title: "Үйлчилгээний нөхцөл | Crypto News",
+  description: "Crypto News сайтыг ашиглах дүрэм, журам.",
 };
 
 const SECTIONS = [
   {
     title: "1. Контентын лиценз, зохиогчийн эрх",
     body: [
-      "Сайт дахь бүх нийтлэл, зураг, дизайн болон бусад контент нь Криптологи болон тухайн зохиогчдын өмч бөгөөд зохиогчийн эрхийн хуулиар хамгаалагдана.",
+      "Сайт дахь бүх нийтлэл, зураг, дизайн болон бусад контент нь Crypto News болон тухайн зохиогчдын өмч бөгөөд зохиогчийн эрхийн хуулиар хамгаалагдана.",
       "Хувийн, ашгийн бус зорилгоор нийтлэлээс иш татах, холбоос тавихыг зөвшөөрнө. Гэхдээ бүтэн нийтлэлийг эх сурвалжийг дурдалгүй хуулбарлан өөр платформд нийтлэхийг хориглоно. Бусад ашиглалтын хувьд бидэнтэй урьдчилан холбогдож зөвшөөрөл авна уу.",
     ],
   },
@@ -102,10 +102,10 @@ export default async function TermsPage() {
             <p className="text-[14px] text-muted leading-[1.9] font-ttNormsPro">
               Асуулт байвал бидэнтэй{" "}
               <a
-                href="mailto:info@ciphernews.mn"
+                href="mailto:info@cryptonews.mn"
                 className="text-accent hover:underline"
               >
-                info@ciphernews.mn
+                info@cryptonews.mn
               </a>{" "}
               хаягаар холбогдоно уу.
             </p>

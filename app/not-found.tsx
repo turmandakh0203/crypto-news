@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "404 — Хуудас олдсонгүй | Криптологи",
+  title: "404 — Хуудас олдсонгүй | Crypto News",
 };
 
 export default function NotFound() {

@@ -8,7 +8,7 @@ import NewsSection from "@/components/news/NewsSection";
 import SectionFooter from "@/components/news/SectionFooter";
 
 export const metadata: Metadata = {
-  title: "Мэдээ | Криптологи",
+  title: "Мэдээ | Crypto News",
   description:
     "Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.",
   alternates: {

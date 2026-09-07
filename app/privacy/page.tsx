@@ -4,16 +4,16 @@ import SectionFooter from "@/components/news/SectionFooter";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Нууцлалын бодлого | Криптологи",
+  title: "Нууцлалын бодлого | Crypto News",
   description:
-    "Криптологи сайт хэрэглэгчийн мэдээллийг хэрхэн цуглуулж, ашигладаг тухай.",
+    "Crypto News сайт хэрэглэгчийн мэдээллийг хэрхэн цуглуулж, ашигладаг тухай.",
 };
 
 const SECTIONS = [
   {
     title: "1. Ерөнхий мэдээлэл",
     body: [
-      'Энэхүү Нууцлалын бодлого нь Криптологи ("бид", "сайт") сайтыг ашиглах явцад бидний цуглуулдаг мэдээллийг хэрхэн боловсруулж, хадгалж, хамгаалдгийг тайлбарлана. Сайтыг ашигласнаар та энэхүү бодлоготой танилцаж, зөвшөөрч буйд тооцогдоно.',
+      'Энэхүү Нууцлалын бодлого нь Crypto News ("бид", "сайт") сайтыг ашиглах явцад бидний цуглуулдаг мэдээллийг хэрхэн боловсруулж, хадгалж, хамгаалдгийг тайлбарлана. Сайтыг ашигласнаар та энэхүү бодлоготой танилцаж, зөвшөөрч буйд тооцогдоно.',
     ],
   },
   {
@@ -111,10 +111,10 @@ export default async function PrivacyPage() {
             <p className="text-[14px] text-muted leading-[1.9] font-ttNormsPro">
               Асуулт байвал бидэнтэй{" "}
               <a
-                href="mailto:info@ciphernews.mn"
+                href="mailto:info@cryptonews.mn"
                 className="text-accent hover:underline"
               >
-                info@ciphernews.mn
+                info@cryptonews.mn
               </a>{" "}
               хаягаар холбогдоно уу.
             </p>

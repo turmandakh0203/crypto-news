@@ -10,8 +10,18 @@ import { cn } from "@/lib/utils";
 const DARK_STOPS = ["#18CCFC", "#6344F5", "#AE48FF"];
 const LIGHT_STOPS = ["#0891B2", "#4338CA", "#7E22CE"];
 
+type Props = {
+  className?: string;
+  /**
+   * Нийтлэл унших мэт анхаарал шаардсан хуудсанд зориулсан "тайван" горим:
+   * зурлагын тоог эрс цөөрүүлж, зурлаг дагуух гэрэлтдэг градиентийн
+   * хөдөлгөөнт animation-ыг бүрмөсөн зогсоож, статик болгоно.
+   */
+  subtle?: boolean;
+};
+
 export const BackgroundBeams = React.memo(
-  ({ className }: { className?: string }) => {
+  ({ className, subtle = false }: Props) => {
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
@@ -70,6 +80,15 @@ export const BackgroundBeams = React.memo(
       "M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491",
       "M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483",
     ];
+
+    // subtle горимд зурлагын дөрөвний нэгийг л үлдээж (~50 -> ~13), үлдсэн
+    // хэсгийг нь бүрмөсөн арилгана — арын хөдөлгөөнийг мэдэгдэхүйц
+    // багасгана. Path ба gradient хоёулаа ижил индексээр холбогдох тул
+    // хоёр давталтад ижил индексийн жагсаалт ашиглана.
+    const indices = subtle
+      ? paths.map((_, i) => i).filter((i) => i % 4 === 0)
+      : paths.map((_, i) => i);
+
     return (
       <div
         className={cn(
@@ -92,17 +111,17 @@ export const BackgroundBeams = React.memo(
             strokeWidth="0.5"
           ></path>
 
-          {paths.map((path, index) => (
+          {indices.map((index) => (
             <motion.path
               key={`path-` + index}
-              d={path}
+              d={paths[index]}
               stroke={`url(#linearGradient-${index})`}
               strokeOpacity={mounted && resolvedTheme === "light" ? 0.7 : 0.4}
               strokeWidth="0.5"
             ></motion.path>
           ))}
           <defs>
-            {paths.map((path, index) => (
+            {indices.map((index) => (
               <motion.linearGradient
                 id={`linearGradient-${index}`}
                 key={`gradient-${index}`}
@@ -112,18 +131,26 @@ export const BackgroundBeams = React.memo(
                   y1: "0%",
                   y2: "0%",
                 }}
-                animate={{
-                  x1: ["0%", "100%"],
-                  x2: ["0%", "95%"],
-                  y1: ["0%", "100%"],
-                  y2: ["0%", `${93 + Math.random() * 8}%`],
-                }}
-                transition={{
-                  duration: Math.random() * 10 + 10,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: Math.random() * 10,
-                }}
+                animate={
+                  subtle
+                    ? undefined
+                    : {
+                        x1: ["0%", "100%"],
+                        x2: ["0%", "95%"],
+                        y1: ["0%", "100%"],
+                        y2: ["0%", `${93 + Math.random() * 8}%`],
+                      }
+                }
+                transition={
+                  subtle
+                    ? undefined
+                    : {
+                        duration: Math.random() * 10 + 10,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        delay: Math.random() * 10,
+                      }
+                }
               >
                 <stop offset="0%" stopColor={colorA} stopOpacity="0"></stop>
                 <stop offset="4%" stopColor={colorA}></stop>

@@ -9,21 +9,22 @@ import { TAG_COLORS, PROSE_CLASSES } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { useInView } from "@/lib/useInView";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { CalenderIcon, UserIcon } from "../icons";
+import { CalenderIcon, UserIcon, EyeIconDark } from "../icons";
 
 const NOISE_GRADIENT =
   "linear-gradient(135deg, rgb(230, 51, 41), rgb(255, 107, 53), rgb(26, 95, 180))";
 const NOISE_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
-type Props = { news: News; direction?: "left" | "right" };
+type Props = { news: News; direction?: "left" | "right"; index: number };
 
-export default function HeroCard({ news, direction = "left" }: Props) {
+export default function HeroCard({ news, direction = "left", index }: Props) {
   const { ref: inViewRef, inView } = useInView<HTMLDivElement>();
   const [active, setActive] = useState(false);
   const expandedRef = useRef<HTMLDivElement>(null);
   const id = useId();
 
   const v = inView ? "in-view" : "";
+  const tagColor = TAG_COLORS[index % 5] ?? TAG_COLORS[0];
   const slideClass =
     direction === "right" ? "anim-from-right" : "anim-from-left";
 
@@ -198,8 +199,7 @@ export default function HeroCard({ news, direction = "left" }: Props) {
       <div ref={inViewRef} className={`${slideClass} ${v}`}>
         <motion.div
           layoutId={`hero-${news.id}-${id}`}
-          onClick={() => setActive(true)}
-          className="relative rounded-xl overflow-hidden border border-border cursor-pointer"
+          className="relative rounded-xl overflow-hidden border border-border bg-bg hover:border-accent/40 transition-colors"
         >
           <div
             className="absolute inset-x-0 top-0 h-[1px] z-10"
@@ -208,98 +208,111 @@ export default function HeroCard({ news, direction = "left" }: Props) {
                 "linear-gradient(90deg, transparent 0%, #fe2726 50%, transparent 100%)",
             }}
           />
-          <div className="group relative overflow-hidden min-h-[240px] md:min-h-[360px]">
-            <motion.div
-              layoutId={`hero-img-${news.id}-${id}`}
-              className="absolute inset-0"
-            >
-              {news.image_url ? (
-                <Image
-                  src={news.image_url}
-                  alt={news.title}
-                  fill
-                  className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 700px"
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_60%)]" />
-                </div>
-              )}
-            </motion.div>
+          <Link href={`/news/${news.slug}`} className="group block">
+            {/* Image */}
+            <div className="relative h-56 md:h-72 overflow-hidden">
+              <motion.div
+                layoutId={`hero-img-${news.id}-${id}`}
+                className="absolute inset-0"
+              >
+                {news.image_url ? (
+                  <Image
+                    src={news.image_url}
+                    alt={news.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-all duration-700 ease-out"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 700px"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_60%)]" />
+                  </div>
+                )}
+              </motion.div>
 
-            <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-500" />
-            <div className="absolute inset-0 [background:repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.012)_2px,rgba(255,255,255,0.012)_3px)]" />
-            <div className="corner-tl" />
-            <div className="corner-br" />
-
-            <div className="absolute inset-0 flex flex-col justify-end p-5 space-y-4 md:p-8 z-10">
-              <div className="reveal-wrap mb-2">
-                <div
-                  className={`reveal-up anim-delay-1 flex items-center ${v}`}
-                >
-                  <span className="text-[12px] tracking-[0.16em] uppercase text-accent font-ttnormspro font-bold border-t-2 border-accent">
-                    {news.tags?.[0]}
-                  </span>
-                </div>
-              </div>
-
-              <div className="pb-4 reveal-wrap">
-                <div className={`reveal-up anim-delay-2 ${v}`}>
-                  <h2
-                    className="font-ttNormsPro font-medium text-[26px] md:text-[36px] w-full leading-[1.2] line-clamp-3"
+              <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-500" />
+              <div className="corner-tl" />
+              <div className="corner-br" />
+              {news.tags?.[0] && (
+                <div className="absolute top-5 left-6 z-10">
+                  <span
+                    className="text-[8px] tracking-[0.18em] uppercase rounded-full border font-semibold px-1.5 py-[2px] inline-block backdrop-blur-lg"
                     style={{
-                      backgroundImage:
-                        "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
-                      backgroundClip: "text",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
+                      color: tagColor.color,
+                      backgroundColor: tagColor.bg,
+                      borderColor: tagColor.border,
                     }}
                   >
-                    {news.title}
-                  </h2>
+                    {news.tags[0]}
+                  </span>
                 </div>
-              </div>
+              )}
+            </div>
 
-              <div className="reveal-wrap mb-6">
-                <div className={`reveal-up anim-delay-4 ${v}`}>
-                  <p className="text-[13px] md:text-[15px] text-white/65 leading-[1.75] w-full font-SpaceGrotesk line-clamp-2">
-                    {news.lead}
-                  </p>
-                </div>
-              </div>
+            {/* Text content on its own background */}
+            <div className="p-5 md:p-6 flex flex-col gap-3">
+              {/* {news.tags?.[0] && (
+                <span className="text-[12px] tracking-[0.16em] uppercase text-accent font-ttnormspro font-bold border-t-2 border-accent pt-1.5 w-fit">
+                  {news.tags[0]}
+                </span>
+              )} */}
+              <h2
+                className="font-ttNormsPro font-bold text-[17px] md:text-[19px] w-full leading-[1.3] line-clamp-2"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                {news.title}
+              </h2>
+              <p className="text-[13px] md:text-[14px] text-muted leading-[1.7] font-SpaceGrotesk line-clamp-2">
+                {news.lead}
+              </p>
 
-              <div className="reveal-wrap">
-                <div className={`reveal-up anim-delay-5 ${v}`}>
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-1 items-center text-[12px] tracking-[0.1em] text-white/65 font-mono">
-                      {news.created_at && (
-                        <span className="flex items-center gap-1.5">
-                          <CalenderIcon className="w-3 h-3" />
-                          {formatDate(news.created_at)}
-                        </span>
-                      )}
-                      {news.author && (
-                        <>
-                          <span className="opacity-80">·</span>
-                          <span className="flex items-center gap-1.5">
-                            <UserIcon className="w-3 h-3" />
-                            {news.author}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <span className="mt-3 inline-flex items-center gap-2 px-3 py-1 tracking-[0.05em] rounded-full text-orange-400 group-hover:bg-accent group-hover:text-white font-medium text-sm">
-                      Дэлгэрэнгүй
-                      <span className="group-hover:translate-x-1 transition-transform">
-                        →
-                      </span>
+              <div className="flex justify-between items-center pt-3 mt-1 border-t border-border">
+                <div className="flex gap-1.5 items-center text-[11px] tracking-[0.05em] text-muted font-mono">
+                  {news.created_at && (
+                    <span className="flex items-center gap-1">
+                      <CalenderIcon className="w-3 h-3" />
+                      {formatDate(news.created_at)}
                     </span>
-                  </div>
+                  )}
+                  {news.author && (
+                    <>
+                      <span className="opacity-60">·</span>
+                      <span className="flex items-center gap-1">
+                        <UserIcon className="w-3 h-3" />
+                        {news.author}
+                      </span>
+                    </>
+                  )}
                 </div>
+                <span className="inline-flex items-center gap-1 text-accent text-[11px] font-semibold tracking-[0.08em] uppercase flex-shrink-0">
+                  Дэлгэрэнгүй
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
+
+          {/* Preview button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActive(true);
+            }}
+            aria-label="Түргэн харах"
+            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
+          >
+            <EyeIconDark className="w-4 h-4" />
+          </button>
         </motion.div>
       </div>
     </>

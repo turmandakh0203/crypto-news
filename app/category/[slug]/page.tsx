@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = await getCategoryBySlug(slug);
   if (!cat) return { title: "Ангилал олдсонгүй" };
 
-  const title = `${cat.name} | Криптологи`;
+  const title = `${cat.name} | Crypto News`;
   const description = cat.description ?? `${cat.name} ангиллын мэдээнүүд`;
 
   return {
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: `https://crypto-news-alpha.vercel.app/category/${slug}`,
-      siteName: "Криптологи",
+      siteName: "Crypto News",
       type: "website",
     },
   };

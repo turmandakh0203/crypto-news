@@ -297,6 +297,29 @@ html {
   animation-play-state: paused;
 }
 
+/* ── Хэрэглэгчийн "хөдөлгөөн багасгах" (prefers-reduced-motion) тохиргоог
+   дэмжих ── бүх давтагдах/урсдаг animation-ыг зогсоож, шууд эцсийн
+   төлөвт нь харуулна. motion/react-ийн animation-уудыг MotionConfig
+   (components/ThemeProvider.tsx) реглэдэг тул энд зөвхөн CSS-ээр
+   удирддаг animation-уудыг хамруулна. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-ticker {
+    animation: none;
+  }
+  .reveal-up,
+  .anim-slide-r,
+  .anim-from-left,
+  .anim-from-right,
+  .anim-from-bottom {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* ── Columns layout (data-type="columns") ── */
 .prose [data-type="columns"] {
   display: flex;

@@ -8,7 +8,7 @@ import type { News } from "@/types/news";
 import { TAG_COLORS, PROSE_CLASSES } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { CalenderIcon, UserIcon } from "../icons";
+import { CalenderIcon, UserIcon, EyeIconDark } from "../icons";
 
 const NOISE_GRADIENT =
   "linear-gradient(135deg, rgb(230, 51, 41), rgb(255, 107, 53), rgb(26, 95, 180))";
@@ -212,13 +212,15 @@ export default function MainHeroCard({ news }: Props) {
       <div className="px-4 md:px-8">
         <motion.div
           layoutId={`main-hero-${news.id}-${id}`}
-          onClick={() => setActive(true)}
-          className="relative rounded-xl overflow-hidden my-6 mx-auto max-w-[1400px] cursor-pointer"
+          className="relative rounded-xl overflow-hidden my-6 mx-auto max-w-[1400px]"
         >
           <div className="corner-tl z-10 px-4" />
           <div className="corner-br z-10 px-4" />
 
-          <div className="group relative overflow-hidden h-[420px] md:h-[620px]">
+          <Link
+            href={`/news/${news.slug}`}
+            className="group relative block overflow-hidden h-[420px] md:h-[620px]"
+          >
             <motion.div
               layoutId={`main-hero-img-${news.id}-${id}`}
               className="absolute inset-0"
@@ -302,7 +304,21 @@ export default function MainHeroCard({ news }: Props) {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
+
+          {/* Preview button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActive(true);
+            }}
+            aria-label="Түргэн харах"
+            className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
+          >
+            <EyeIconDark className="w-4 h-4" />
+          </button>
         </motion.div>
       </div>
     </>

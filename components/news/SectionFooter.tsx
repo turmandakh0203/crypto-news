@@ -31,9 +31,9 @@ export default async function SectionFooter() {
           <div className="md:col-span-1">
             <Link href="/news" className="inline-block mb-4 group">
               <span className="font-bebas text-[36px] leading-none tracking-[0.08em] text-ink group-hover:text-accent transition-colors font-semibold">
-                КРИПТО
+                CRYPTO
                 <span className="text-accent group-hover:text-ink transition-colors">
-                  ЛОГИ
+                  NEWS
                 </span>
               </span>
             </Link>
@@ -91,7 +91,7 @@ export default async function SectionFooter() {
       <div className="border-t border-border">
         <div className="max-w-[1280px] mx-auto px-6 py-[14.5px] flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-[12px] tracking-[0.14em] text-muted font-ttNormsPro uppercase">
-            © 2024–{year} · CryptoLogy · v2.1.2
+            © 2024–{year} · Crypto News · v2.1.2
           </span>
           <span className="text-[12px] tracking-[0.1em] text-muted font-ttNormsPro">
             Made with <span className="text-accent">❤️</span> by{" "}

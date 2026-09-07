@@ -35,7 +35,7 @@ export async function trackViewAction(newsId: number) {
   if (error) console.error("trackViewAction:", error);
 }
 
-type SearchResult = {
+export type SearchResult = {
   id: number;
   slug: string;
   title: string;
@@ -44,6 +44,14 @@ type SearchResult = {
   image_url: string | null;
   categories: { name: string } | null;
 };
+
+// Discriminated so the client can tell "no matches" (ok, empty array) apart
+// from "the search itself failed" (rate-limited or a DB error) — both used
+// to collapse to an empty array, which made a transient failure look like
+// a real "not found" result.
+export type SearchResponse =
+  | { ok: true; results: SearchResult[] }
+  | { ok: false; reason: "rate_limited" | "db_error" };
 
 export async function getComments(newsId: number): Promise<Comment[]> {
   const { data, error } = await supabase()
@@ -87,18 +95,20 @@ export async function submitComment(
   return { ok: true };
 }
 
-export async function searchNews(q: string): Promise<SearchResult[]> {
+export async function searchNews(q: string): Promise<SearchResponse> {
   const trimmed = q.trim();
-  if (trimmed.length < 2) return [];
+  if (trimmed.length < 2) return { ok: true, results: [] };
 
   const ip = await getClientIp();
-  if (!rateLimit(`search:${ip}`, 40, 60 * 1000)) return [];
+  if (!rateLimit(`search:${ip}`, 40, 60 * 1000)) {
+    return { ok: false, reason: "rate_limited" };
+  }
 
   // PostgREST's .or() takes a raw filter string where "," "." "(" ")" are
   // syntax, and ILIKE treats "%" "_" as wildcards — strip all of these so
   // user input can't inject extra filter conditions or wildcard patterns.
   const safe = trimmed.replace(/[,.()%_]/g, " ").trim();
-  if (safe.length < 2) return [];
+  if (safe.length < 2) return { ok: true, results: [] };
   const { data, error } = await supabase()
     .from("news")
     .select("id, slug, title, lead, category_id, image_url, categories(name)")
@@ -108,7 +118,7 @@ export async function searchNews(q: string): Promise<SearchResult[]> {
     .limit(8);
   if (error) {
     console.error("searchNews:", error);
-    return [];
+    return { ok: false, reason: "db_error" };
   }
-  return (data as unknown as SearchResult[]) ?? [];
+  return { ok: true, results: (data as unknown as SearchResult[]) ?? [] };
 }

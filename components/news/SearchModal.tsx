@@ -3,27 +3,26 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { searchNews } from "@/lib/actions";
+import { searchNews, type SearchResult } from "@/lib/actions";
 import { CrossIcon, SearchIcon } from "../icons";
 
-type Result = {
-  id: number;
-  slug: string;
-  title: string;
-  lead: string;
-  category_id: number;
-  categories: { name: string } | null;
-  image_url: string | null;
-};
+// "idle" — fewer than 2 characters typed, nothing to show.
+// "loading" — a search is pending (debounce or in-flight request).
+// "success" — results came back with at least one match.
+// "empty" — the search completed but found nothing.
+// "error" — the search itself failed (rate-limited or a server error),
+//           distinct from a legitimate "no matches" result.
+type Status = "idle" | "loading" | "success" | "empty" | "error";
 
 type Props = { onClose: () => void };
 
 export default function SearchModal({ onClose }: Props) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Result[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [status, setStatus] = useState<Status>("idle");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const requestIdRef = useRef(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,18 +35,36 @@ export default function SearchModal({ onClose }: Props) {
   }, [onClose]);
 
   const search = useCallback(async (q: string) => {
-    if (q.length < 2) {
+    const requestId = ++requestIdRef.current;
+    try {
+      const res = await searchNews(q);
+      if (requestIdRef.current !== requestId) return; // a newer query superseded this one
+      if (!res.ok) {
+        setResults([]);
+        setStatus("error");
+        return;
+      }
+      setResults(res.results);
+      setSelected(0);
+      setStatus(res.results.length === 0 ? "empty" : "success");
+    } catch {
+      if (requestIdRef.current !== requestId) return;
       setResults([]);
-      return;
+      setStatus("error");
     }
-    setLoading(true);
-    const data = await searchNews(q);
-    setResults(data);
-    setSelected(0);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
+    if (query.trim().length < 2) {
+      requestIdRef.current++; // invalidate any in-flight search for the old query
+      setStatus("idle");
+      setResults([]);
+      return;
+    }
+    // Set "loading" immediately (before the debounce fires) so the UI never
+    // has a window where it looks like "no results" while actually just
+    // waiting to send the request.
+    setStatus("loading");
     const t = setTimeout(() => search(query), 250);
     return () => clearTimeout(t);
   }, [query, search]);
@@ -88,7 +105,7 @@ export default function SearchModal({ onClose }: Props) {
             placeholder="Мэдээ хайх..."
             className="flex-1 py-3.5 bg-transparent text-[14px] text-ink placeholder:text-muted outline-none font-ttNormsPro"
           />
-          {loading && (
+          {status === "loading" && (
             <div className="w-3.5 h-3.5 border border-accent border-t-transparent rounded-full animate-spin flex-shrink-0" />
           )}
           <button
@@ -100,7 +117,14 @@ export default function SearchModal({ onClose }: Props) {
         </div>
 
         {/* Results */}
-        {results.length > 0 && (
+        {status === "loading" && (
+          <div className="px-4 py-8 flex items-center justify-center gap-2.5 text-[12px] text-muted font-ttNormsPro">
+            <span className="w-3.5 h-3.5 border border-accent border-t-transparent rounded-full animate-spin flex-shrink-0" />
+            Хайж байна...
+          </div>
+        )}
+
+        {status === "success" && (
           <ul className="max-h-[60vh] overflow-y-auto">
             {results.map((r, i) => (
               <li key={r.id}>
@@ -139,9 +163,26 @@ export default function SearchModal({ onClose }: Props) {
           </ul>
         )}
 
-        {query.length >= 2 && !loading && results.length === 0 && (
+        {status === "empty" && (
           <div className="px-4 py-8 text-center text-[12px] text-muted font-ttNormsPro">
             &quot;{query}&quot; — мэдээ олдсонгүй
+          </div>
+        )}
+
+        {status === "error" && (
+          <div className="px-4 py-8 flex flex-col items-center gap-2 text-center text-[12px] font-ttNormsPro">
+            <span className="text-red-400">
+              Алдаа гарлаа. Дахин оролдоно уу.
+            </span>
+            <button
+              onClick={() => {
+                setStatus("loading");
+                search(query);
+              }}
+              className="text-[11px] text-accent underline underline-offset-2 hover:no-underline"
+            >
+              Дахин оролдох
+            </button>
           </div>
         )}
       </div>

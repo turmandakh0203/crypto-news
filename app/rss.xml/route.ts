@@ -3,7 +3,7 @@ import { getAllNews } from "@/lib/supabase";
 export const revalidate = 3600;
 
 const BASE_URL = "https://crypto-news-alpha.vercel.app";
-const FEED_TITLE = "Криптологи";
+const FEED_TITLE = "Crypto News";
 const FEED_DESCRIPTION =
   "Монгол хэлээр криптографи, криптоанализ болон мэдээллийн аюулгүй байдлын мэдлэгийг хүргэх зорилготой мэдээний платформ.";
 const MAX_ITEMS = 30;

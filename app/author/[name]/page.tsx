@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (articles.length === 0) return { title: "Зохиогч олдсонгүй" };
 
   const role = articles[0]?.author_role;
-  const title = `${decoded} | Криптологи`;
+  const title = `${decoded} | Crypto News`;
   const description = role
     ? `${decoded} — ${role}. Нийт ${articles.length} нийтлэл.`
     : `${decoded}-ийн нийтлэлүүд. Нийт ${articles.length} нийтлэл.`;
@@ -62,7 +62,7 @@ export default async function AuthorPage({ params }: Props) {
     url: `https://crypto-news-alpha.vercel.app/author/${name}`,
     worksFor: {
       "@type": "Organization",
-      name: "Криптологи",
+      name: "Crypto News",
       url: "https://crypto-news-alpha.vercel.app",
     },
   };

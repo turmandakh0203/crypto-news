@@ -4,7 +4,7 @@ import SectionFooter from "@/components/news/SectionFooter";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Холбоо барих | Криптологи",
+  title: "Холбоо барих | Crypto News",
   description:
     "Санал, хүсэлт, алдааны мэдэгдэл эсвэл хамтын ажиллагааны хүсэлтээ илгээнэ үү.",
   alternates: { canonical: "https://crypto-news-alpha.vercel.app/contact" },
@@ -28,7 +28,7 @@ export default async function ContactPage() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-5 h-[1.5px] bg-accent" />
             <span className="text-[10px] tracking-[0.22em] uppercase text-accent font-ttNormsPro font-semibold">
-              Криптологи · Холбоо барих
+              Crypto News · Холбоо барих
             </span>
           </div>
           <h1 className="font-ttNormsPro font-bold text-[40px] md:text-[64px] leading-[1.05] text-ink mb-6">
@@ -62,10 +62,10 @@ export default async function ContactPage() {
                       Имэйл
                     </p>
                     <a
-                      href="mailto:info@ciphernews.mn"
+                      href="mailto:info@cryptonews.mn"
                       className="text-[15px] text-ink font-ttNormsPro hover:text-accent transition-colors"
                     >
-                      info@ciphernews.mn
+                      info@cryptonews.mn
                     </a>
                   </div>
                 </div>
@@ -121,7 +121,7 @@ export default async function ContactPage() {
             {/* Баруун — CTA карт */}
             <div className="flex flex-col gap-4">
               <a
-                href="mailto:info@ciphernews.mn"
+                href="mailto:info@cryptonews.mn"
                 className="group relative p-8 border border-border rounded-xl hover:border-accent/40 transition-colors duration-300 overflow-hidden block"
               >
                 <div
@@ -136,7 +136,7 @@ export default async function ContactPage() {
                   Имэйл илгээх
                 </h3>
                 <p className="text-[13px] text-muted leading-[1.8] font-ttNormsPro mb-4">
-                  info@ciphernews.mn хаяг руу шууд имэйл илгээнэ үү.
+                  info@cryptonews.mn хаяг руу шууд имэйл илгээнэ үү.
                 </p>
                 <span className="text-[10px] tracking-[0.16em] uppercase text-accent font-ttNormsPro font-semibold">
                   Имэйл нээх →

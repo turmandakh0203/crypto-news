@@ -1,6 +1,7 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import ThemeToggle from "@/components/ThemeToggle";
 import SearchButton from "@/components/news/SearchButton";
@@ -33,31 +34,6 @@ type Props = {
   categories?: Category[];
 };
 
-function ScrollHandler() {
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const section = searchParams.get("scroll");
-    if (!section) return;
-    let attempts = 0;
-    const tryScroll = () => {
-      const el = document.querySelector<HTMLElement>(
-        `[data-section="${section}"]`,
-      );
-      if (!el) {
-        if (++attempts < 20) setTimeout(tryScroll, 100);
-        return;
-      }
-      const top = el.getBoundingClientRect().top + window.scrollY - 56;
-      window.scrollTo({ top, behavior: "smooth" });
-      window.history.replaceState(null, "", "/news");
-    };
-    tryScroll();
-  }, [searchParams]);
-
-  return null;
-}
-
 function LandingLayoutInner({
   children,
   activeCategory,
@@ -66,13 +42,12 @@ function LandingLayoutInner({
   const router = useRouter();
   const pathname = usePathname();
 
-  const [active, setActive] = useState(activeCategory ?? "");
+  // Header nav highlighting follows the current route only — a category is
+  // "active" when the page itself represents that category (passed in via
+  // activeCategory), not while merely scrolling past it on the /news feed.
+  const active = activeCategory ?? "";
   const [mounted, setMounted] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-
-  useEffect(() => {
-    if (activeCategory && pathname !== "/news") setActive(activeCategory);
-  }, [activeCategory, pathname]);
 
   const [headerHidden, setHeaderHidden] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -101,58 +76,14 @@ function LandingLayoutInner({
       ? "/ciphernews_icon_dark.svg"
       : "/ciphernews_icon_white.svg";
 
-  useEffect(() => {
-    if (pathname !== "/news") return;
-    const sections = document.querySelectorAll<HTMLElement>("[data-section]");
-    const visible = new Map<string, number>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const key = entry.target.getAttribute("data-section") ?? "";
-          if (entry.isIntersecting) {
-            visible.set(key, entry.intersectionRatio);
-          } else {
-            visible.delete(key);
-          }
-        });
-        if (visible.size === 0) {
-          setActive("");
-        } else {
-          const best = [...visible.entries()].reduce((a, b) =>
-            a[1] > b[1] ? a : b,
-          );
-          setActive(best[0]);
-        }
-      },
-      { threshold: [0.1, 0.3, 0.5], rootMargin: "-10% 0px -40% 0px" },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, [pathname]);
-
   const handleLogoClick = () => {
     if (pathname === "/news") window.scrollTo({ top: 0, behavior: "smooth" });
     else router.push("/news");
   };
 
-  const handleCategoryClick = (key: string) => {
-    if (pathname !== "/news") {
-      router.push(`/news?scroll=${encodeURIComponent(key)}`);
-      return;
-    }
-    const el = document.querySelector<HTMLElement>(`[data-section="${key}"]`);
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 56;
-    window.scrollTo({ top, behavior: "smooth" });
-  };
-
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col">
       <NewsTicker />
-
-      <Suspense fallback={null}>
-        <ScrollHandler />
-      </Suspense>
 
       {/* ── Top navigation header ── */}
       <header
@@ -167,7 +98,7 @@ function LandingLayoutInner({
           }}
         />
 
-        <div className="flex items-center h-14 gap-3 max-w-[1400px] mx-auto">
+        <div className="flex items-center h-14 gap-3 max-w-[1400px] mx-auto px-4 md:px-8">
           {/* Mobile hamburger */}
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger className="md:hidden flex items-center justify-center w-8 h-8 text-ink">
@@ -231,12 +162,10 @@ function LandingLayoutInner({
                   const Icon = ICON_MAP[cat.icon ?? ""] ?? NewspaperIcon;
                   const label = cat.nav_label ?? cat.name;
                   return (
-                    <button
+                    <Link
                       key={cat.id}
-                      onClick={() => {
-                        handleCategoryClick(cat.name);
-                        setSheetOpen(false);
-                      }}
+                      href={`/category/${cat.slug}`}
+                      onClick={() => setSheetOpen(false)}
                       className={`flex items-center gap-3 px-3 py-3 rounded-lg text-[12px] tracking-[0.08em] uppercase font-ttNormsPro font-semibold transition-colors ${
                         active === cat.name
                           ? "text-accent bg-accent/10"
@@ -245,7 +174,7 @@ function LandingLayoutInner({
                     >
                       <Icon className="w-4 h-4" />
                       {label}
-                    </button>
+                    </Link>
                   );
                 })}
               </nav>
@@ -292,10 +221,10 @@ function LandingLayoutInner({
             {categories.map((cat) => {
               const label = cat.nav_label ?? cat.name;
               return (
-                <button
+                <Link
                   key={cat.id}
-                  onClick={() => handleCategoryClick(cat.name)}
-                  className={`relative px-3 h-14 text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
+                  href={`/category/${cat.slug}`}
+                  className={`relative px-3 h-14 flex items-center text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
                     active === cat.name
                       ? "text-accent"
                       : "text-ink hover:text-muted hover:bg-surface/60 rounded"
@@ -305,7 +234,7 @@ function LandingLayoutInner({
                   {active === cat.name && (
                     <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent rounded-full" />
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
