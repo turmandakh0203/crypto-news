@@ -12,10 +12,10 @@ export default function SearchButton({ className }: { className?: string }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="px-3 py-1 bg-bg/85 rounded-full border border-ink/80 flex items-center gap-1.5 text-[10px] tracking-[0.14em] uppercase text-ink/70 font-bebas font-bold transition-colors"
+        className="px-1 py-1 bg-bg/85 flex items-center gap-1 text-[11px] tracking-[0.14em] text-ink/70 font-ttNormsPro font-medium transition-colors"
       >
-        <SearchIcon className="w-3 h-3.5 text-ink/80" />
-        <span className="hidden sm:inline text-ink/80">Хайх...</span>
+        <SearchIcon className="w-4 h-4 text-ink" />
+        {/* <span className="hidden sm:inline text-ink">Мэдээ хайх...</span> */}
       </button>
       {open && <SearchModal onClose={() => setOpen(false)} />}
     </>

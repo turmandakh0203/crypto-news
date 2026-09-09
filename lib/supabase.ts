@@ -5,8 +5,8 @@ import type { News, Category } from "@/types/news";
 export const CATEGORY_PAGE_SIZE = 8; // 2 hero + 6 grid (desktop), 6 mobile initially
 export const LOAD_MORE_SIZE = 3;
 
-const CAT_SELECT = "categories(id, name)";
-const CAT_INNER = "categories!inner(id, name)";
+const CAT_SELECT = "categories(id, name, icon)";
+const CAT_INNER = "categories!inner(id, name, icon)";
 
 let _client: ReturnType<typeof createClient> | null = null;
 
@@ -31,6 +31,7 @@ function normalize(item: any): News {
   return {
     ...item,
     category: item.categories?.name ?? "",
+    category_icon: item.categories?.icon ?? null,
     tags:
       typeof item.tags === "string" ? JSON.parse(item.tags) : (item.tags ?? []),
     published: item.published === true,

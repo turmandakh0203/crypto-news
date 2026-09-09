@@ -28,8 +28,9 @@ import SectionFooter from "@/components/news/SectionFooter";
 import Comments from "@/components/news/Comments";
 import BackButton from "@/components/news/BackButton";
 import { getComments } from "@/lib/actions";
-import { UserIcon, ExternalLinkIcon } from "@/components/icons";
+import { UserIcon } from "@/components/icons";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import CardFallback from "@/components/news/CardFallback";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -106,7 +107,11 @@ export default async function NewsDetailPage({ params }: Props) {
         <BackgroundBeams className="fixed inset-0 z-0" subtle />
 
         {/* ── Hero зураг ── */}
-        <HeroParallax imageUrl={news.image_url} alt={news.title}>
+        <HeroParallax
+          imageUrl={news.image_url}
+          alt={news.title}
+          categoryIcon={news.category_icon}
+        >
           <div className="absolute bottom-0 left-0 right-0 h-full bg-black/60" />
 
           {/* Гарчиг — хар давхаргын дунд байрлана */}
@@ -138,7 +143,7 @@ export default async function NewsDetailPage({ params }: Props) {
                     {formatDate(news.created_at)}
                   </span>
                 )}
-                {news.author && (
+                {/* {news.author && (
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-[1px] bg-accent/50" />
                     <Link
@@ -154,7 +159,7 @@ export default async function NewsDetailPage({ params }: Props) {
                       </span>
                     )}
                   </div>
-                )}
+                )} */}
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-[1px] bg-accent/50" />
                   <ViewCount newsId={news.id} initialCount={viewCount} />
@@ -165,6 +170,20 @@ export default async function NewsDetailPage({ params }: Props) {
                     {readingTime(news.content)} мин унших
                   </span>
                 </div>
+                {/* {news.source_url && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-[1px] bg-accent/50" />
+                    <a
+                      href={news.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="text-[11px] flex items-center gap-1 font-mono font-semibold tracking-[0.1em] uppercase text-accent hover:text-white transition-colors"
+                    >
+                      Эх нийтлэл унших
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                )} */}
               </div>
             </div>
           </div>
@@ -172,6 +191,12 @@ export default async function NewsDetailPage({ params }: Props) {
 
         {/* ── Агуулга — hero-г давж эхэлнэ ── */}
         <div className="max-w-[1040px] mx-auto px-4 md:px-6 -mt-6 md:-mt-14 pt-10 md:pt-20 relative z-10">
+          {/* Унших текст (таг, бэлтгэсэн/эх сурвалж мэдээлэл, удиртгал) ~740px
+              өргөнд төвлөрнө — тав тухтай мөрийн уртад зориулав. Зураг, видео,
+              хүснэгт, интерактив туршилт зэрэг media элементүүд доор энэ
+              хүрээнээс гадуур, эцэг контейнерийн бүтэн (илүү өргөн) зайг
+              ашиглана. */}
+          <div className="max-w-[740px] mx-auto">
           {/* Tag-ууд */}
           {news.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-5">
@@ -239,8 +264,8 @@ export default async function NewsDetailPage({ params }: Props) {
                     rel="noopener noreferrer nofollow"
                     className="inline-flex items-center gap-1.5 text-[13px] text-accent hover:underline font-medium"
                   >
-                    Эх сурвалжийг үзэх
-                    <ExternalLinkIcon className="w-3 h-3" />
+                    Эх нийтлэл унших
+                    <span aria-hidden="true">↗</span>
                   </a>
                 </div>
               )}
@@ -253,6 +278,7 @@ export default async function NewsDetailPage({ params }: Props) {
               {news.lead}
             </p>
           )}
+          </div>
 
           {/* YouTube бичлэг */}
           {news.video_url && <YoutubeEmbed url={news.video_url} />}
@@ -331,9 +357,10 @@ export default async function NewsDetailPage({ params }: Props) {
                           sizes="400px"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
-                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.1),transparent_70%)]" />
-                        </div>
+                        <CardFallback
+                          categoryIcon={r.category_icon}
+                          iconClassName="w-8 h-8 text-white/20"
+                        />
                       )}
                       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
                       {/* Gradient top border */}

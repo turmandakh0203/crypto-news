@@ -18,6 +18,7 @@ export type News = {
   slug: string;
   category_id: number;
   category: string; // joined from categories.name
+  category_icon?: string | null; // joined from categories.icon (e.g. "LockIcon")
   lead: string;
   content: string;
   image_url: string;
@@ -82,6 +83,11 @@ export const TAG_COLORS: Record<
 };
 export const PROSE_CLASSES = [
   "prose max-w-none dark:prose-invert",
+  // Унших текст (гарчиг, догол мөр, жагсаалт, ишлэл) ~740px өргөнд
+  // төвлөрнө — тав тухтай мөрийн урттай байхын тулд. Зураг, хүснэгт,
+  // багана зэрэг media элементүүд энд ороогүй тул эцэг .prose-ийн бүх
+  // өргөнийг (илүү өргөн зайг) ашиглах хэвээр үлдэнэ.
+  "prose-h1:max-w-[740px] prose-h1:mx-auto prose-h2:max-w-[740px] prose-h2:mx-auto prose-h3:max-w-[740px] prose-h3:mx-auto prose-p:max-w-[740px] prose-p:mx-auto prose-ul:max-w-[740px] prose-ul:mx-auto prose-ol:max-w-[740px] prose-ol:mx-auto prose-blockquote:max-w-[740px] prose-blockquote:mx-auto prose-pre:max-w-[740px] prose-pre:mx-auto prose-hr:max-w-[740px] prose-hr:mx-auto",
   'prose-h2:font-["TT_Norms_Pro"] prose-h2:text-[22px] prose-h2:tracking-wide prose-h2:font-semibold prose-h2:text-ink prose-h2:mt-12 prose-h2:mb-5',
   "prose-h3:text-[18px] prose-h3:font-semibold prose-h3:text-ink prose-h3:mt-8 prose-h3:mb-3",
   "prose-p:text-muted prose-p:text-[17px] prose-p:leading-[1.6] prose-p:font-ttnormspro prose-p:mb-5",

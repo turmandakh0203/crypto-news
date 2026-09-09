@@ -9,6 +9,7 @@ import { TAG_COLORS, PROSE_CLASSES } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { CalenderIcon, UserIcon, EyeIconDark } from "../icons";
+import CardFallback from "./CardFallback";
 
 const NOISE_GRADIENT =
   "linear-gradient(135deg, rgb(230, 51, 41), rgb(255, 107, 53), rgb(26, 95, 180))";
@@ -86,7 +87,10 @@ export default function MainHeroCard({ news }: Props) {
                       priority
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
+                    <CardFallback
+                      categoryIcon={news.category_icon}
+                      iconClassName="w-14 h-14 text-white/20"
+                    />
                   )}
                   <div className="absolute inset-0 bg-black/30" />
                   <button
@@ -208,60 +212,35 @@ export default function MainHeroCard({ news }: Props) {
         )}
       </AnimatePresence>
 
-      {/* ── Main hero card ── */}
+      {/* ── Main hero card — HomeHero-той ижил хоёр баганат зохион байгуулалт ── */}
       <div className="px-4 md:px-8">
         <motion.div
           layoutId={`main-hero-${news.id}-${id}`}
-          className="relative rounded-xl overflow-hidden my-6 mx-auto max-w-[1400px]"
+          className="relative rounded-2xl overflow-hidden my-6 mx-auto max-w-[1400px] border border-border bg-bg"
         >
-          <div className="corner-tl z-10 px-4" />
-          <div className="corner-br z-10 px-4" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(230,51,41,0.08),transparent_60%)] pointer-events-none" />
 
-          <Link
-            href={`/news/${news.slug}`}
-            className="group relative block overflow-hidden h-[420px] md:h-[620px]"
-          >
-            <motion.div
-              layoutId={`main-hero-img-${news.id}-${id}`}
-              className="absolute inset-0"
-            >
-              {news.image_url ? (
-                <Image
-                  src={news.image_url}
-                  alt={news.title}
-                  fill
-                  className="object-cover group-hover:scale-125 transition-all duration-700 ease-out"
-                  sizes="(max-width: 1400px) 100vw, 1400px"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
-              )}
-            </motion.div>
-
-            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
-
-            <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 md:px-10 md:pb-10 z-10">
+          <div className="relative grid md:grid-cols-2 gap-8 md:gap-10 items-center p-4 md:p-8">
+            {/* Зүүн — текст (мобайл дээр зургийн ДАРАА, десктоп дээр зүүн талд) */}
+            <div className="order-2 md:order-1">
               <div className="reveal-wrap mb-4">
                 <div
-                  className={`reveal-up anim-delay-1 flex items-center gap-3 ${v}`}
+                  className={`reveal-up anim-delay-1 flex items-center gap-2 ${v}`}
                 >
-                  <div
-                    className={`h-[1.5px] w-6 bg-[#e63329] anim-slide-r anim-delay-1 ${v}`}
-                  />
-                  <span className="text-[12px] uppercase text-[#e63329] font-ttNormsPro font-bold tracking-[0.18em]">
+                  <div className="w-4 h-[1.5px] bg-accent" />
+                  <span className="text-[10px] tracking-[0.22em] uppercase text-accent font-ttNormsPro font-bold">
                     Сүүлийн мэдээ — {news.tags?.[0] || news.category}
                   </span>
                 </div>
               </div>
 
-              <div className="mb-4 reveal-wrap">
+              <div className="reveal-wrap mb-5">
                 <div
                   className={`reveal-up ${v}`}
                   style={{ animationDelay: "0.1s" }}
                 >
                   <h1
-                    className="font-ttNormsPro font-bold text-[30px] sm:text-[36px] md:text-[44px] lg:text-[54px] xl:text-[64px] 2xl:text-[70px] leading-[1.1] md:leading-[1.2] w-full xl:w-1/2 2xl:w-3/5 line-clamp-3"
+                    className="font-ttNormsPro font-bold text-[28px] sm:text-[36px] md:text-[42px] leading-[1.15] line-clamp-3"
                     style={{
                       backgroundImage:
                         "linear-gradient(90deg, rgb(255,201,134) 0%, rgb(254,39,38) 100%)",
@@ -275,50 +254,96 @@ export default function MainHeroCard({ news }: Props) {
                 </div>
               </div>
 
-              <div className="reveal-wrap mb-6">
+              <div className="reveal-wrap mb-7">
                 <div className={`reveal-up anim-delay-4 ${v}`}>
-                  <p className="line-clamp-2 text-[14px] md:text-[16px] text-white/65 leading-[1.75] w-full md:w-1/2 font-light">
+                  <p className="text-[14px] md:text-[16px] text-muted leading-[1.8] font-ttnormspro line-clamp-3 max-w-[460px]">
                     {news.lead}
                   </p>
                 </div>
               </div>
 
-              <div className="reveal-wrap">
-                <div className={`reveal-up anim-delay-5 ${v}`}>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3 text-white/50 text-[12px] font-mono">
-                      {news.created_at && (
-                        <span className="flex items-center gap-1.5">
-                          <CalenderIcon className="w-3 h-3" />
-                          {formatDate(news.created_at)}
-                        </span>
-                      )}
-                    </div>
-                    <span className="mt-3 inline-flex items-center gap-2 px-3 py-1 tracking-[0.05em] rounded-full text-orange-400 group-hover:bg-accent group-hover:text-white font-medium text-sm flex-shrink-0 transition-colors">
-                      Дэлгэрэнгүй
-                      <span className="group-hover:translate-x-1 transition-transform">
-                        →
-                      </span>
+              <div className="reveal-wrap mb-6">
+                <div
+                  className={`reveal-up anim-delay-5 ${v} flex flex-wrap items-center`}
+                >
+                  {news.created_at && (
+                    <span className="flex items-center gap-1.5 text-[12px] text-muted font-mono my-4">
+                      <CalenderIcon className="w-3 h-3" />
+                      {formatDate(news.created_at)}
                     </span>
-                  </div>
+                  )}
+                  <Link
+                    href={`/news/${news.slug}`}
+                    className="inline-flex items-center gap-2 text-[11px] tracking-[0.16em] uppercase font-ttNormsPro font-semibold text-white bg-accent border border-accent rounded-full px-4 py-2 hover:bg-accent/85 transition-colors"
+                  >
+                    Дэлгэрэнгүй унших →
+                  </Link>
                 </div>
               </div>
-            </div>
-          </Link>
 
-          {/* Preview button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setActive(true);
-            }}
-            aria-label="Түргэн харах"
-            className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
-          >
-            <EyeIconDark className="w-4 h-4" />
-          </button>
+              {/* {news.tags?.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {(Array.isArray(news.tags) ? news.tags : []).map(
+                    (tag: string, i: number) => (
+                      <span
+                        key={tag}
+                        className={`text-[10px] tracking-[0.08em] uppercase px-3 py-1.5 rounded-full border font-SpaceGrotesk ${
+                          i === 0
+                            ? "bg-accent/15 border-accent/50 text-accent"
+                            : "border-border text-muted"
+                        }`}
+                      >
+                        {tag}
+                      </span>
+                    ),
+                  )}
+                </div>
+              )} */}
+            </div>
+
+            {/* Баруун — зураг/decorative панель (мобайл дээр эхэнд, сайтын
+                бусад картуудтай (image-first) ижил дараалалтай байлгав) */}
+            <div className={`relative order-1 md:order-2 anim-from-right ${v}`}>
+              <Link
+                href={`/news/${news.slug}`}
+                className="group relative block h-[220px] md:h-[380px] rounded-2xl overflow-hidden border border-border bg-[#050d18]"
+              >
+                <motion.div
+                  layoutId={`main-hero-img-${news.id}-${id}`}
+                  className="absolute inset-0"
+                >
+                  {news.image_url ? (
+                    <Image
+                      src={news.image_url}
+                      alt={news.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
+                      sizes="(max-width: 768px) 100vw, 700px"
+                      priority
+                    />
+                  ) : (
+                    <CardFallback
+                      categoryIcon={news.category_icon}
+                      iconClassName="w-16 h-16 text-white/20"
+                    />
+                  )}
+                </motion.div>
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                <div className="corner-tl" />
+                <div className="corner-br" />
+              </Link>
+
+              {/* Preview button */}
+              <button
+                type="button"
+                onClick={() => setActive(true)}
+                aria-label="Түргэн харах"
+                className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
+              >
+                <EyeIconDark className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </motion.div>
       </div>
     </>

@@ -13,7 +13,6 @@ import {
   CodeIcon,
 } from "@/components/icons";
 import type { Category } from "@/types/news";
-import NewsTicker from "@/components/news/NewsTicker";
 import {
   Sheet,
   SheetContent,
@@ -27,6 +26,17 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   ChartBarIcon,
   CodeIcon,
 };
+
+// Мобайл цэсний (Sheet) доод хэсэгт зориулсан бяцхан "footer". SectionFooter
+// бол өгөгдөл татдаг async Server Component, харин энэ файл "use client" тул
+// SectionFooter-ийг энд шууд импортлож болохгүй (build эвдэнэ) — тиймээс
+// зөвхөн статик холбоосуудыг энд тусад нь давхардуулав.
+const MOBILE_SHEET_LINKS = [
+  { label: "Бидний тухай", href: "/about" },
+  { label: "Холбоо барих", href: "/contact" },
+  { label: "Нууцлалын бодлого", href: "/privacy" },
+  { label: "Үйлчилгээний нөхцөл", href: "/terms" },
+];
 
 type Props = {
   children: React.ReactNode;
@@ -83,8 +93,6 @@ function LandingLayoutInner({
 
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col">
-      <NewsTicker />
-
       {/* ── Top navigation header ── */}
       <header
         className={`sticky top-0 z-20 border-b border-border transition-transform duration-300 bg-surface/80 backdrop-blur-2xl ${headerHidden ? "-translate-y-full" : ""}`}
@@ -98,7 +106,7 @@ function LandingLayoutInner({
           }}
         />
 
-        <div className="flex items-center h-14 gap-3 max-w-[1400px] mx-auto px-4 md:px-8">
+        <div className="flex items-center h-14 gap-3 max-w-[1400px] mx-auto px-2 md:px-4">
           {/* Mobile hamburger */}
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger className="md:hidden flex items-center justify-center w-8 h-8 text-ink">
@@ -144,7 +152,7 @@ function LandingLayoutInner({
               </div>
               {/* Sheet nav items */}
               <nav className="flex flex-col px-3 py-4 gap-1">
-                <button
+                {/* <button
                   onClick={() => {
                     handleLogoClick();
                     setSheetOpen(false);
@@ -157,19 +165,20 @@ function LandingLayoutInner({
                 >
                   <HomeIcon className="w-4 h-4" />
                   Нүүр
-                </button>
+                </button> */}
                 {categories.map((cat) => {
                   const Icon = ICON_MAP[cat.icon ?? ""] ?? NewspaperIcon;
                   const label = cat.nav_label ?? cat.name;
+                  const isActive = active === cat.name;
                   return (
                     <Link
                       key={cat.id}
                       href={`/category/${cat.slug}`}
                       onClick={() => setSheetOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-3 rounded-lg text-[12px] tracking-[0.08em] uppercase font-ttNormsPro font-semibold transition-colors ${
-                        active === cat.name
-                          ? "text-accent bg-accent/10"
-                          : "text-ink hover:bg-surface"
+                      className={`flex items-center gap-3 px-3 py-3 rounded-lg border-l-2 text-[12px] tracking-[0.08em] uppercase font-ttNormsPro font-bold transition-all duration-200 focus:outline-none focus:scale-105 ${
+                        isActive
+                          ? "text-accent bg-accent/10 border-accent"
+                          : "text-ink hover:bg-surface border-transparent focus:text-accent focus:bg-accent/10"
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -178,6 +187,27 @@ function LandingLayoutInner({
                   );
                 })}
               </nav>
+
+              {/* Sheet footer — доод хэсгийн хоосон зайг дүүргэнэ */}
+              <div className="mt-auto px-5 py-4 border-t border-border">
+                <ul className="flex flex-col gap-2 mb-4">
+                  {MOBILE_SHEET_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setSheetOpen(false)}
+                        className="text-[12px] text-muted hover:text-ink font-ttNormsPro transition-colors flex items-center gap-1 group"
+                      >
+                        <div className="w-2 h-[1.5px] bg-accent" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <span className="text-[10px] tracking-[0.1em] text-muted font-ttNormsPro uppercase">
+                  © 2024–{new Date().getFullYear()} · Crypto News
+                </span>
+              </div>
             </SheetContent>
           </Sheet>
 
@@ -189,7 +219,7 @@ function LandingLayoutInner({
             <img
               src={logo}
               alt="Logo"
-              className="w-7 h-7 group-hover:scale-110 transition-transform duration-200 md:block hidden"
+              className="w-8 h-8 group-hover:scale-110 transition-transform duration-200 md:block hidden"
             />
             <span
               className="text-[15px] font-ttNormsPro font-bold tracking-[0.12em] grid justify-items-start"
@@ -200,12 +230,9 @@ function LandingLayoutInner({
             </span>
           </button>
 
-          {/* Divider */}
-          <div className="hidden md:block w-px h-5 bg-border mx-1" />
-
           {/* Desktop category nav */}
           <nav className="hidden md:flex items-center justify-center flex-1">
-            <button
+            {/* <button
               onClick={handleLogoClick}
               className={`relative px-3 h-14 text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
                 active === ""
@@ -217,23 +244,30 @@ function LandingLayoutInner({
               {active === "" && (
                 <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent rounded-full" />
               )}
-            </button>
+            </button> */}
             {categories.map((cat) => {
               const label = cat.nav_label ?? cat.name;
+              const isActive = active === cat.name;
               return (
                 <Link
                   key={cat.id}
                   href={`/category/${cat.slug}`}
-                  className={`relative px-3 h-14 flex items-center text-[13px] tracking-[0.1em] uppercase font-ttNormsPro font-semibold transition-all duration-200 ${
-                    active === cat.name
+                  className={`group relative px-8 h-14 flex items-center text-[15px] tracking-[0.1em] font-ttNormsPro font-medium transition-all duration-200${
+                    isActive
                       ? "text-accent"
-                      : "text-ink hover:text-muted hover:bg-surface/60 rounded"
+                      : "text-ink hover:text-accent hover:scale-110 rounded"
                   }`}
                 >
                   {label}
-                  {active === cat.name && (
-                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent rounded-full" />
-                  )}
+                  {/* Идэвхтэй ангилал БОЛОН focus орсон үед харагдана —
+                      үргэлж DOM-д байгаа тул CSS transition ажиллана */}
+                  <span
+                    className={`absolute bottom-0 left-3 right-3 h-[2px] bg-accent rounded-full origin-center transition-all duration-300 ${
+                      isActive
+                        ? "opacity-100 scale-x-100"
+                        : "opacity-0 scale-x-0 group-focus:opacity-100 group-focus:scale-x-100"
+                    }`}
+                  />
                 </Link>
               );
             })}

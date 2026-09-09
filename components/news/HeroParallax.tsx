@@ -1,14 +1,21 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import CardFallback from "./CardFallback";
 
 interface Props {
   imageUrl?: string | null;
   alt: string;
+  categoryIcon?: string | null;
   children: React.ReactNode;
 }
 
-export default function HeroParallax({ imageUrl, alt, children }: Props) {
+export default function HeroParallax({
+  imageUrl,
+  alt,
+  categoryIcon,
+  children,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
 
@@ -48,9 +55,10 @@ export default function HeroParallax({ imageUrl, alt, children }: Props) {
             priority
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(230,51,41,0.15),transparent_55%)]" />
-          </div>
+          <CardFallback
+            categoryIcon={categoryIcon}
+            iconClassName="w-16 h-16 text-white/20"
+          />
         )}
       </div>
       {children}

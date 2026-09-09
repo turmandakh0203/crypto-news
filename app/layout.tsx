@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Space_Grotesk, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Space_Grotesk,
+  JetBrains_Mono,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 
@@ -13,7 +17,10 @@ const bebas = localFont({
 const sourceSerif = localFont({
   src: [
     { path: "../public/fonts/SourceSerif4-Variable.ttf", style: "normal" },
-    { path: "../public/fonts/SourceSerif4-Italic-Variable.ttf", style: "italic" },
+    {
+      path: "../public/fonts/SourceSerif4-Italic-Variable.ttf",
+      style: "italic",
+    },
   ],
   variable: "--font-source-serif",
   display: "swap",
@@ -67,7 +74,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link rel="apple-touch-icon" href="/ciphernews_icon_white.png" />
+        <link rel="apple-touch-icon" href="/ciphernews_icon_white.svg" />
         <link
           rel="alternate"
           type="application/rss+xml"

@@ -10,6 +10,7 @@ import { formatDate } from "@/lib/supabase";
 import { useInView } from "@/lib/useInView";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { CalenderIcon, UserIcon, EyeIconDark } from "../icons";
+import CardFallback from "./CardFallback";
 
 const NOISE_GRADIENT =
   "linear-gradient(135deg, rgb(230, 51, 41), rgb(255, 107, 53), rgb(26, 95, 180))";
@@ -78,7 +79,10 @@ export default function HeroCard({ news, direction = "left", index }: Props) {
                       sizes="480px"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
+                    <CardFallback
+                      categoryIcon={news.category_icon}
+                      iconClassName="w-12 h-12 text-white/15"
+                    />
                   )}
                   <button
                     onClick={() => setActive(false)}
@@ -224,13 +228,16 @@ export default function HeroCard({ news, direction = "left", index }: Props) {
                     sizes="(max-width: 768px) 100vw, (max-width: 1400px) 50vw, 700px"
                   />
                 ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#05101e] to-[#0a1628]">
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(230,51,41,0.15),transparent_60%)]" />
-                  </div>
+                  <CardFallback
+                    categoryIcon={news.category_icon}
+                    iconClassName="w-14 h-14 text-white/15"
+                  />
                 )}
               </motion.div>
 
-              <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-500" />
+              {news.image_url && (
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-500" />
+              )}
               <div className="corner-tl" />
               <div className="corner-br" />
               {news.tags?.[0] && (
@@ -256,16 +263,7 @@ export default function HeroCard({ news, direction = "left", index }: Props) {
                   {news.tags[0]}
                 </span>
               )} */}
-              <h2
-                className="font-ttNormsPro font-bold text-[17px] md:text-[19px] w-full leading-[1.3] line-clamp-2"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(110deg, rgb(255,210,160) 0%, rgb(230,51,41) 100%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
+              <h2 className="font-ttNormsPro font-bold text-ink text-[17px] md:text-[19px] w-full leading-[1.3] line-clamp-2 group-hover:text-accent transition-colors">
                 {news.title}
               </h2>
               <p className="text-[13px] md:text-[14px] text-muted leading-[1.7] font-SpaceGrotesk line-clamp-2">

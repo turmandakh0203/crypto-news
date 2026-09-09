@@ -7,6 +7,7 @@ import { TAG_COLORS } from "@/types/news";
 import { formatDate } from "@/lib/supabase";
 import { loadMoreCategoryNews } from "@/lib/actions";
 import { LOAD_MORE_SIZE } from "@/lib/supabase";
+import CardFallback from "./CardFallback";
 
 function FeaturedCard({ news, index }: { news: News; index: number }) {
   const tagColor = TAG_COLORS[index % 5] ?? TAG_COLORS[0];
@@ -33,7 +34,10 @@ function FeaturedCard({ news, index }: { news: News; index: number }) {
             sizes="calc(100vw - 1rem)"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
+          <CardFallback
+            categoryIcon={news.category_icon}
+            iconClassName="w-11 h-11 text-white/20"
+          />
         )}
         <div className="absolute inset-0" />
       </div>
@@ -89,7 +93,10 @@ function ListCard({ news, index }: { news: News; index: number }) {
             sizes="72px"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#050d18] to-[#0a1628]" />
+          <CardFallback
+            categoryIcon={news.category_icon}
+            iconClassName="w-6 h-6 text-white/25"
+          />
         )}
       </div>
 
